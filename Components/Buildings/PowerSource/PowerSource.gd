@@ -1,14 +1,12 @@
-extends Node2D
+extends Area2D
 
 export var power = 50
-onready var range_area = get_node("Range")
+var state = 1
 
 func _ready():
 	pass
 
 func _on_Timer_timeout():
-	print("tick")
-	for consumer in range_area.get_overlapping_bodies():
-		print("-> " + consumer.name)
+	for consumer in get_overlapping_areas():
 		if consumer.is_in_group("PowerConsumer"):
 			consumer.trigger(power)
