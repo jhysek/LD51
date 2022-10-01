@@ -28,6 +28,34 @@ bg_color = Color( 0, 0, 0, 0.203922 )
 0/shape_one_way_margin = 0.0
 0/shapes = [  ]
 0/z_index = 0
+1/name = "tileset.png 1"
+1/texture = ExtResource( 1 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 64, 0, 64, 64 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "tileset.png 2"
+2/texture = ExtResource( 1 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 128, 0, 64, 64 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
@@ -38,18 +66,28 @@ current = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="TacticsOveraly" type="Node" parent="CanvasLayer"]
+[node name="TacticsOveraly" type="Node2D" parent="CanvasLayer"]
+position = Vector2( 214, 759 )
 
-[node name="Title" type="Label" parent="CanvasLayer/TacticsOveraly"]
+[node name="Control" type="Control" parent="CanvasLayer/TacticsOveraly"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -212.0
+margin_top = -756.0
+margin_right = 987.0
+margin_bottom = 40.0
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="CanvasLayer/TacticsOveraly/Control"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -42.0
-margin_top = 35.0
-margin_right = 43.0
-margin_bottom = 49.0
+margin_left = -46.5
+margin_top = 37.0
+margin_right = 38.5
+margin_bottom = 51.0
 text = "Tactics mode"
 
-[node name="Buildings" type="Panel" parent="CanvasLayer/TacticsOveraly"]
+[node name="Buildings" type="Panel" parent="CanvasLayer/TacticsOveraly/Control"]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -60,38 +98,38 @@ margin_bottom = 1.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
 
-[node name="Power" parent="CanvasLayer/TacticsOveraly/Buildings" instance=ExtResource( 4 )]
+[node name="Power" parent="CanvasLayer/TacticsOveraly/Control/Buildings" instance=ExtResource( 4 )]
 component_code = "PowerSource"
 
-[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Buildings/Power"]
+[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Power"]
 
-[node name="Sprite" type="Sprite" parent="CanvasLayer/TacticsOveraly/Buildings/Power/Visual"]
+[node name="Sprite" type="Sprite" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Power/Visual"]
 texture = ExtResource( 6 )
 
-[node name="Turret" parent="CanvasLayer/TacticsOveraly/Buildings" instance=ExtResource( 4 )]
+[node name="Turret" parent="CanvasLayer/TacticsOveraly/Control/Buildings" instance=ExtResource( 4 )]
 position = Vector2( 176, 43 )
 component_code = "Turret"
 
-[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Buildings/Turret"]
+[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Turret"]
 
-[node name="Block" type="Sprite" parent="CanvasLayer/TacticsOveraly/Buildings/Turret/Visual"]
+[node name="Block" type="Sprite" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Turret/Visual"]
 texture = ExtResource( 7 )
 
-[node name="Icon" type="Sprite" parent="CanvasLayer/TacticsOveraly/Buildings/Turret/Visual/Block"]
+[node name="Icon" type="Sprite" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Turret/Visual/Block"]
 position = Vector2( 0, -5 )
 scale = Vector2( 0.165, 0.152439 )
 texture = ExtResource( 5 )
 
-[node name="Radar" parent="CanvasLayer/TacticsOveraly/Buildings" instance=ExtResource( 4 )]
+[node name="Radar" parent="CanvasLayer/TacticsOveraly/Control/Buildings" instance=ExtResource( 4 )]
 position = Vector2( 300, 44 )
 component_code = "MotionDetector"
 
-[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Buildings/Radar"]
+[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Radar"]
 
-[node name="Block" type="Sprite" parent="CanvasLayer/TacticsOveraly/Buildings/Radar/Visual"]
+[node name="Block" type="Sprite" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Radar/Visual"]
 texture = ExtResource( 7 )
 
-[node name="Icon" type="Sprite" parent="CanvasLayer/TacticsOveraly/Buildings/Radar/Visual/Block"]
+[node name="Icon" type="Sprite" parent="CanvasLayer/TacticsOveraly/Control/Buildings/Radar/Visual/Block"]
 position = Vector2( 0, -5 )
 scale = Vector2( 0.51, 0.298077 )
 texture = ExtResource( 8 )
@@ -101,20 +139,20 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -183.0
-margin_top = -124.0
-margin_right = -14.0
-margin_bottom = -12.0
+margin_left = 794.0
+margin_top = -88.0
+margin_right = 963.0
+margin_bottom = 24.0
 text = "I'm ready"
 
-[node name="DefenceOverlay" type="Node" parent="CanvasLayer"]
+[node name="DefenceOverlay" type="Node2D" parent="CanvasLayer"]
 
 [node name="GameField" type="TileMap" parent="."]
-position = Vector2( 181, 142 )
+position = Vector2( 148, 194 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 64, 48 )
 format = 1
-tile_data = PoolIntArray( -65536, 0, 0, -65535, 0, 0, -65534, 0, 0, -65533, 0, 0, -65532, 0, 0, -65531, 0, 0, -65530, 0, 0, -65529, 0, 0, -65528, 0, 0, -65527, 0, 0, -65526, 0, 0, -65525, 0, 0, -65524, 0, 0, -65523, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 65536, 0, 0, 65537, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65545, 0, 0, 65546, 0, 0, 65547, 0, 0, 65548, 0, 0, 65549, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 0, 0, 131084, 0, 0, 131085, 0, 0, 196608, 0, 0, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196615, 0, 0, 196616, 0, 0, 196617, 0, 0, 196618, 0, 0, 196619, 0, 0, 196620, 0, 0, 196621, 0, 0, 262144, 0, 0, 262145, 0, 0, 262146, 0, 0, 262147, 0, 0, 262149, 0, 0, 262150, 0, 0, 262151, 0, 0, 262152, 0, 0, 262154, 0, 0, 262155, 0, 0, 262156, 0, 0, 262157, 0, 0, 327680, 0, 0, 327681, 0, 0, 327682, 0, 0, 327683, 0, 0, 327684, 0, 0, 327685, 0, 0, 327686, 0, 0, 327687, 0, 0, 327690, 0, 0, 327691, 0, 0, 327692, 0, 0, 327693, 0, 0, 393216, 0, 0, 393217, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 393223, 0, 0, 393224, 0, 0, 393225, 0, 0, 393226, 0, 0, 393227, 0, 0, 393228, 0, 0, 393229, 0, 0 )
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 65536, 0, 0, 65537, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65545, 0, 0, 65546, 0, 0, 65547, 0, 0, 65548, 0, 0, 65549, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 1, 0, 131077, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 0, 0, 131084, 0, 0, 131085, 0, 0, 196608, 0, 0, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196615, 0, 0, 196616, 0, 0, 196617, 0, 0, 196618, 0, 0, 196619, 0, 0, 196620, 0, 0, 196621, 0, 0, 262144, 0, 0, 262145, 0, 0, 262146, 0, 0, 262147, 0, 0, 262149, 0, 0, 262150, 0, 0, 262151, 0, 0, 262152, 0, 0, 262154, 0, 0, 262155, 1, 0, 262156, 0, 0, 262157, 0, 0, 327680, 0, 0, 327681, 0, 0, 327682, 0, 0, 327683, 0, 0, 327684, 0, 0, 327685, 2, 0, 327686, 0, 0, 327687, 0, 0, 327690, 0, 0, 327691, 0, 0, 327692, 0, 0, 327693, 0, 0, 393216, 0, 0, 393217, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 393223, 0, 0, 393224, 0, 0, 393225, 0, 0, 393226, 0, 0, 393227, 0, 0, 393228, 0, 0, 393229, 0, 0 )
 
 [node name="Cursor" type="Sprite" parent="GameField"]
 position = Vector2( 33, 121 )
