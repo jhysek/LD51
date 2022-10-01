@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Components/GridEditor/DraggableItem/DraggableItem.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 1, 1, 1, 0.113725 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 64, 64 )
+
+[node name="DraggableItem" type="Area2D"]
+script = ExtResource( 2 )
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Panel" type="Panel" parent="Visual"]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_styles/panel = SubResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[connection signal="input_event" from="." to="." method="_on_DraggableItem_input_event"]

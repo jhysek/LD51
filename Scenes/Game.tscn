@@ -1,0 +1,102 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/tileset.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Game.gd" type="Script" id=2]
+[ext_resource path="res://Assets/cursor.png" type="Texture" id=3]
+[ext_resource path="res://Components/Selectable/Selectable.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Components/Buildings/PowerSource/PowerSource.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Components/Buildings/PowerSource/building.png" type="Texture" id=6]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 0.203922 )
+
+[sub_resource type="TileSet" id=1]
+0/name = "tileset.png 0"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+
+[node name="Game" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 600, 404 )
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TacticsOveraly" type="Node" parent="CanvasLayer"]
+
+[node name="Title" type="Label" parent="CanvasLayer/TacticsOveraly"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -42.0
+margin_top = 35.0
+margin_right = 43.0
+margin_bottom = 49.0
+text = "Tactics mode"
+
+[node name="Buildings" type="Panel" parent="CanvasLayer/TacticsOveraly"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = -143.0
+margin_right = 2.0
+margin_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="Power" parent="CanvasLayer/TacticsOveraly/Buildings" instance=ExtResource( 4 )]
+component_code = "PowerSource"
+
+[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Buildings/Power"]
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/TacticsOveraly/Buildings/Power/Visual"]
+texture = ExtResource( 6 )
+
+[node name="Power2" parent="CanvasLayer/TacticsOveraly/Buildings" instance=ExtResource( 4 )]
+position = Vector2( 176, 43 )
+component_code = "PowerSource"
+
+[node name="Visual" type="Node2D" parent="CanvasLayer/TacticsOveraly/Buildings/Power2"]
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/TacticsOveraly/Buildings/Power2/Visual"]
+texture = ExtResource( 6 )
+
+[node name="Button" type="Button" parent="CanvasLayer/TacticsOveraly"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -183.0
+margin_top = -124.0
+margin_right = -14.0
+margin_bottom = -12.0
+text = "I'm ready"
+
+[node name="DefenceOverlay" type="Node" parent="CanvasLayer"]
+
+[node name="GameField" type="TileMap" parent="."]
+position = Vector2( 181, 142 )
+tile_set = SubResource( 1 )
+cell_size = Vector2( 64, 48 )
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65545, 0, 0, 65546, 0, 0, 65547, 0, 0, 65548, 0, 0, 65549, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 0, 131080, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 0, 0, 131084, 0, 0, 131085, 0, 0, 196608, 0, 0, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196615, 0, 0, 196616, 0, 0, 196617, 0, 0, 196618, 0, 0, 196619, 0, 0, 196620, 0, 0, 196621, 0, 0, 262144, 0, 0, 262145, 0, 0, 262146, 0, 0, 262147, 0, 0, 262149, 0, 0, 262150, 0, 0, 262151, 0, 0, 262152, 0, 0, 262153, 0, 0, 262154, 0, 0, 262155, 0, 0, 262156, 0, 0, 262157, 0, 0, 327680, 0, 0, 327681, 0, 0, 327682, 0, 0, 327683, 0, 0, 327684, 0, 0, 327685, 0, 0, 327686, 0, 0, 327687, 0, 0, 327688, 0, 0, 327689, 0, 0, 327690, 0, 0, 327691, 0, 0, 327692, 0, 0, 327693, 0, 0, 393216, 0, 0, 393217, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 393223, 0, 0, 393224, 0, 0, 393225, 0, 0, 393229, 0, 0 )
+
+[node name="Cursor" type="Sprite" parent="GameField"]
+position = Vector2( 33, 121 )
+texture = ExtResource( 3 )
+
+[node name="PowerSource" parent="GameField" instance=ExtResource( 5 )]
+position = Vector2( 352, 212 )
