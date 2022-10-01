@@ -1,5 +1,6 @@
 extends Area2D
 
+export var hitpoints = 100
 enum States {
 	DISABLED = 0,
 	ACTIVE = 1,
@@ -8,6 +9,8 @@ enum States {
 
 var state = States.ACTIVE
 var id = name
+var code
+var type = "Building"
 
 onready var turret
 var power = 0
@@ -25,6 +28,7 @@ func trigger(input_power):
 	
 func trigger_outputs(parameter = null):
 	for consumer in get_overlapping_areas():
+		print("overlas with " + str(consumer))
 		if consumer.is_in_group("PowerConsumer") and consumer != get_parent():
 			print("triggering -> " + consumer.name)
 			consumer.trigger(power, parameter)
@@ -60,3 +64,14 @@ func refresh_power_connection(removed_area = null):
 			return
 	power_off()
 	
+func destroy():
+	print("BUILDING DESTROYED")
+	get_node("/root/Game").building_destroyed(code)
+	queue_free()
+	
+func hit(hp, by):
+	hitpoints = hitpoints - hp
+	print("Damage... HP: " + str(hitpoints))
+	if hitpoints <= 0:
+		by.building_destroyed(self)
+		destroy()

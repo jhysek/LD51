@@ -1,5 +1,9 @@
 extends Node2D
 
+signal tactical_mode_signal
+signal defence_mode_signal
+
+onready var Enemy = load("res://Components/Enemy/Enemy.tscn")
 onready var game_field = $GameField
 onready var cursor = $GameField/Cursor
 
@@ -16,6 +20,7 @@ var selected_building = null
 var map_pos = null
 var building_placement = {}
 var traversing_graph = null
+var current_time = 0
 
 var enemies = []
 
@@ -30,15 +35,26 @@ func start_tactics_mode():
 	$CanvasLayer/TacticsOveraly.show()
 	$CanvasLayer/DefenceOverlay.hide()
 	generate_terrain()
-	generate_enemy_waves(10)
+	generate_graph()
+	generate_enemy_waves(1)
 	indicate_enemy_entrances()
+	emit_signal("tactical_mode_signal")
 
 func start_defence_mode():
-	mode = GameModes.TACTICS
+	mode = GameModes.DEFENCE
+	current_time = 0
 	$CanvasLayer/TacticsOveraly.hide()
 	$CanvasLayer/DefenceOverlay.show()
+	emit_signal("defence_mode_signal")
+
+func is_defence_mode():
+	return mode == GameModes.DEFENCE
+	
+func is_tactical_mode():
+	return mode == GameModes.TACTICS
 
 func generate_terrain():
+	# TODO
 	pass
 	
 func accessible_cell(cell_code):
@@ -48,7 +64,7 @@ func map_pos_code(map_pos):
 	return str(map_pos.x) + "x" + str(map_pos.y)
 	
 func get_cell_id(x, y):
-	return map_pos_code(Vector2(x,y))
+  return x * map_size.x + y
 	
 func generate_graph():
 	if !traversing_graph:
@@ -57,14 +73,15 @@ func generate_graph():
 		traversing_graph.clear()
 
   # Add nodes
-	for x in range(0, map_size.x):
-		for y in range(0, map_size.y):
+	for x in range(map_size.x):
+		for y in range(map_size.y):
+			print(str(x) + "x" + str(y) + " => " + str(game_field.get_cell(x,y)))
 			if accessible_cell(game_field.get_cell(x, y)):
 				traversing_graph.add_point(get_cell_id(x, y), Vector3(x, y, 0))
 
   # Add connections
-	for x in range(0, map_size.x):
-		for y in range(0, map_size.y):
+	for x in range(map_size.x):
+		for y in range(map_size.y):
 			var cell_id = get_cell_id(x, y)
 			if traversing_graph.has_point(cell_id):
 				# get neighbours
@@ -72,10 +89,15 @@ func generate_graph():
 					traversing_graph.connect_points(cell_id, get_cell_id(x+1, y))
 				if accessible_cell(game_field.get_cell(x, y + 1)):
 					traversing_graph.connect_points(cell_id, get_cell_id(x, y + 1))
+				if accessible_cell(game_field.get_cell(x - 1, y)):
+					traversing_graph.connect_points(cell_id, get_cell_id(x-1, y))
+				if accessible_cell(game_field.get_cell(x, y - 1)):
+					traversing_graph.connect_points(cell_id, get_cell_id(x, y - 1))
 		
 func get_nearest_path(from, to):
-  return traversing_graph.get_point_path(get_cell_id(from.x, from.y), get_cell_id(to.x, to.y))
-
+	print("gettin path from " + str(from) + " to " + str(to))
+	return traversing_graph.get_point_path(get_cell_id(from.x, from.y), get_cell_id(to.x, to.y))
+	
 func random_top_cell(field_rec):
 	var tiles = []
 	for x in range(field_rec.size.x):
@@ -138,7 +160,7 @@ func generate_enemy_waves(enemy_count):
 	var delay = 0
 	var field_rect = $GameField.get_used_rect()
 	for enemy in range(enemy_count):
-		delay = delay + randi() % 3000
+		delay = delay + randi() % 3000 / 1000
 		var direction = randi() % 4  # 0 - top, 1 - right, 2 - bottom, 3 - left
 		var entry_cell = get_entry_cell(field_rect, direction)
 		var exit_cell = get_exit_cell(field_rect, entry_cell, direction)
@@ -147,7 +169,8 @@ func generate_enemy_waves(enemy_count):
 			enemies.push_back({
 				time = delay,
 				direction = direction,
-				entry_cell = entry_cell
+				entry_cell = entry_cell,
+				exit_cell = exit_cell
 			})
 	return enemies
 	
@@ -191,8 +214,6 @@ func _input(event):
 			if building_at(map_pos):
 				remove_building(map_pos)
 
-
-	
 func building_at(map_pos):
 	if building_placement.has(map_pos_code(map_pos)):
 		return  building_placement[map_pos_code(map_pos)]
@@ -210,6 +231,8 @@ func place_building(map_pos):
 			print("res://Components/Buildings/" + selected_building.component_code)
 			var Component = load("res://Components/Buildings/" + selected_building.component_code + "/" + selected_building.component_code + ".tscn")
 			var component = Component.instance()
+			component.code = map_pos_code(map_pos)
+			component.type = selected_building.component_code
 			game_field.add_child(component)
 			component.position = game_field.map_to_world(map_pos) + CELL_SIZE / 2
 			building_placement[map_pos_code(map_pos)] = component
@@ -222,11 +245,42 @@ func remove_building(map_pos):
 		building.queue_free()
 		building_placement.erase(map_pos_code(map_pos))
 	
+func building_destroyed(code):
+	building_placement.erase(code)
+	for key in building_placement.keys():
+		print("> " + str(key) + ' = ' + building_placement[key].type)
+		if building_placement[key].type == "PowerSource":
+			return
+		
+	print("ALL POWERSOURCES DESTROYED")
+	end_of_round()
+	
 func _process(delta):
-	pass
+	if mode == GameModes.DEFENCE:
+		current_time = current_time + delta
+		if enemies.size() > 0:
+			print(str(current_time) + " | next: " + str(enemies[0].time))
+			if enemies.size() > 0 and current_time > enemies[0].time:
+				release_enemy()
+
+func end_of_round():
+	print("END")
+	start_tactics_mode()
+
+func release_enemy():
+	var enemy_config = enemies.pop_front()
+	print("RELEASING ENEMY! -> " + str(enemy_config))
+	var enemy = Enemy.instance()
+	game_field.add_child(enemy)
+	enemy.path = get_nearest_path(enemy_config.entry_cell, enemy_config.exit_cell)
+	enemy.exit_cell = enemy_config.exit_cell
+	enemy.spawn(enemy_config.entry_cell)
 
 func selected_component(component):
 	selected_building = component
 	for building in $CanvasLayer/TacticsOveraly/Control/Buildings.get_children():
 		building.select(component == building)
 
+
+func _on_Button_pressed():
+	start_defence_mode()

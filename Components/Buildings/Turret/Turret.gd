@@ -1,20 +1,38 @@
 extends TurretComponent
 
+onready var Bullet = load("res://Components/Bullet/Bullet.tscn")
 
 var initial_component
 var outputs = []
 
 var error = ""
 
-
-func trigger(power, direction = null):
-	print("TURRET IS TRIGGERED. Power: " + str(power) + " direction: " + str(direction) )
+func trigger(power, params = {}):
+	var direction = Vector2.RIGHT
+	var angle = 0
+	
+	var icon = $Visual/Block/Icon
+			
+	if params.has('target'):
+		direction = position.direction_to(params.target)
+		angle = position.angle_to_point(params.target)
+		$Tween.interpolate_property(icon, "rotation_degrees", icon.rotation_degrees, rad2deg(angle) - 180, 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		$Tween.start()
+	else:
+		icon.rotation_degrees = 0
+		
 	if state == States.ACTIVE:
 		print(name + " gets power pulse")
-		fire(power, direction)
+		fire(power, direction, angle)
 	else:
 		print("Component " + name + " is not active but received a trigger event!")
 	
-func fire(power, direction):
-	print("TURRET FIRED ")
+func fire(power, direction, angle = 0):
+	print("TURRET FIRED TO " + str(direction))
+	var bullet = Bullet.instance()
+	get_parent().add_child(bullet)
+	bullet.position = position #+ Vector2(32, 0) 
+	bullet.rotation = angle
+	bullet.fire(power, direction)
+	$Sfx/Fire.play()
 	

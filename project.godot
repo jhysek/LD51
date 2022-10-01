@@ -22,7 +22,6 @@ TurretComponent="*res://Components/TurretComponent/TurretComponent.gd"
 
 window/size/width=1200
 window/size/height=800
-window/stretch/mode="viewport"
 window/stretch/aspect="keep_height"
 
 [editor_plugins]

@@ -4,15 +4,24 @@
 [ext_resource path="res://Components/Enemy/Enemy.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 34.0147
+radius = 21.0
 
-[node name="Enemy" type="KinematicBody2D" groups=["Enemy"]]
+[node name="Enemy" type="Area2D" groups=["Enemy"]]
 script = ExtResource( 2 )
 
 [node name="Visual" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="Visual"]
+scale = Vector2( 0.546875, 0.53125 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 3 )
+
+[node name="Line" type="Line2D" parent="."]
+visible = false
+
+[node name="AttackTimer" type="Timer" parent="."]
+
+[connection signal="area_entered" from="." to="." method="_on_Enemy_area_entered"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]

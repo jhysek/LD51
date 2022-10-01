@@ -27,5 +27,11 @@ offset = Vector2( 10, 0.5 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Fire" type="AudioStreamPlayer" parent="Sfx"]
+
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]

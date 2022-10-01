@@ -1,16 +1,33 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Components/Buildings/MotionDetector/MotionDetector.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/MotionDetector/icon_white.png" type="Texture" id=2]
 [ext_resource path="res://Components/TurretComponent/box.png" type="Texture" id=3]
 [ext_resource path="res://Components/TurretComponent/range.png" type="Texture" id=4]
 [ext_resource path="res://Components/Buildings/MotionDetector/RadarArea.gd" type="Script" id=5]
+[ext_resource path="res://Components/Buildings/MotionDetector/impulse.png" type="Texture" id=6]
+[ext_resource path="res://Components/Buildings/PowerSource/PowerSource.tres" type="Animation" id=7]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 29, 19.5 )
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 127.098
+radius = 121.004
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Light2D:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
 
 [node name="MotionDetector" type="Area2D" groups=["PowerConsumer"]]
 script = ExtResource( 1 )
@@ -38,9 +55,25 @@ position = Vector2( 1, -4 )
 shape = SubResource( 1 )
 
 [node name="Range" type="Sprite" parent="RadarArea"]
+visible = false
 position = Vector2( 2, -1.49999 )
-scale = Vector2( 0.3125, 0.31875 )
+scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 4 )
+
+[node name="DistributionDelay" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/DetectorImpulse = ExtResource( 7 )
+anims/PowerSourceImpulse = ExtResource( 7 )
+anims/RESET = SubResource( 3 )
+
+[node name="Light2D" type="Light2D" parent="."]
+texture = ExtResource( 6 )
+texture_scale = 0.33
+color = Color( 0.192157, 0.298039, 0.141176, 1 )
 
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]
+[connection signal="timeout" from="DistributionDelay" to="." method="_on_DistributionDelay_timeout"]
