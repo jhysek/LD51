@@ -6,7 +6,11 @@ func _ready():
 	hitpoints = Components.definitions[type].hitpoints
 	$HealthBar.setup(hitpoints)
 	super()
-		
+
+func price():
+	var price = Components.definitions[type].price 
+	return round(price * (hitpoints / float(Components.definitions[type].hitpoints)))
+	
 func trigger_outputs(input_parameter = null):
 	$AnimationPlayer.play("Impulse")
 	for consumer in $RangeArea.get_overlapping_areas():

@@ -1,13 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Components/Buildings/Turret/Turret.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/Turret/icon_white.png" type="Texture" id=2]
 [ext_resource path="res://Components/TurretComponent/box.png" type="Texture" id=3]
+[ext_resource path="res://Components/TurretComponent/laserShoot.wav" type="AudioStream" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 26, 18 )
 
-[node name="Turret" type="Area2D" groups=["PowerConsumer"]]
+[node name="Turret" type="Area2D" groups=["Building", "PowerConsumer"]]
 script = ExtResource( 1 )
 
 [node name="Visual" type="Node2D" parent="."]
@@ -30,6 +31,7 @@ shape = SubResource( 1 )
 [node name="Sfx" type="Node" parent="."]
 
 [node name="Fire" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 4 )
 
 [node name="Tween" type="Tween" parent="."]
 

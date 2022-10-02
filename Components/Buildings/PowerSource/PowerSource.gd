@@ -21,6 +21,10 @@ func _ready():
 	game.connect("tactical_mode_signal", self, 'switch_to_tactical')
 	game.connect("defence_mode_signal", self, 'switch_to_defence')
 	
+func price():
+	var price = Components.definitions[type].price 
+	return round(price * (hitpoints / float(Components.definitions[type].hitpoints)))
+	
 func switch_to_tactical():
 	print("TACTICAL MODE")
 	tactical_mode = true
@@ -63,6 +67,7 @@ func destroy():
 func hit(hp, by):
 	if hitpoints > 0:
 		hitpoints = hitpoints - hp
+		game.update_buildings_cost()
 		$HealthBar.set_value(hitpoints)
 		print("Damage... HP: " + str(hitpoints))
 		if hitpoints <= 0:

@@ -9,6 +9,9 @@ var direction = Vector2.RIGHT
 
 var error = ""
 
+func price():
+	return Components.definitions[type].price 
+	
 func trigger(power, params = {}):
 	var angle = 0
 	

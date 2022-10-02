@@ -29,6 +29,7 @@ func after_switch_to_tactical():
 func after_switch_to_defence():
 	pass
 	
+	
 func switch_to_tactical():
 	tactical_mode = true
 	if has_node("Light2D"):
@@ -52,6 +53,9 @@ func trigger(input_power, params = null):
 	on_triggered()
 	
 func trigger_outputs(parameter = null):
+	if game.paused:
+		return
+		
 	for consumer in get_overlapping_areas():
 		if consumer.is_in_group("Enemy"):
 			consumer.triggered_by_power_pulse(self)
@@ -97,10 +101,11 @@ func destroy():
 	position = Vector2(-2000, -2000)
 	$DestroyTimer.start()
 	
-func hit(hp, by):
+func hit(hp, by = null):
 	if hitpoints > 0:
 		hitpoints = hitpoints - hp
 		$HealthBar.set_value(hitpoints)
+		game.update_buildings_cost()
 		print("Damage... HP: " + str(hitpoints))
 		if hitpoints <= 0:
 			#by.building_destroyed()

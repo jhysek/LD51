@@ -21,10 +21,13 @@ var map_pos = null
 var building_placement = {}
 var traversing_graph = null
 var current_time = 0
-
+var paused = false
+var config = {}
 var enemies = []
 
 func _ready():
+	config = Levels.current_level()
+	Transition.openScene()
 	randomize()
 	set_process(true)
 	set_process_input(true)
@@ -42,11 +45,31 @@ func start_tactics_mode():
 
 func start_defence_mode():
 	mode = GameModes.DEFENCE
+	$CanvasLayer/DefenceOverlay/AbortMenu.hide()
 	current_time = 0
 	$CanvasLayer/TacticsOverlay.hide()
 	$CanvasLayer/DefenceOverlay.show()
+	update_buildings_cost()
 	emit_signal("defence_mode_signal")
+	
+func abort_mission():
+	if mode == GameModes.DEFENCE:
+		paused = true
+		$CanvasLayer/DefenceOverlay/AbortMenu/Label.text = "Remaining equipment will be sold for: " + str(get_remaining_cost()) + " credits"
+		$CanvasLayer/DefenceOverlay/AbortMenu.show()
 
+func get_remaining_cost():
+	var result = 0
+	for key in building_placement.keys():
+		var building = building_placement[key]
+		print(str(building) + " = " + str(building.price()))
+		result += building.price()
+	return result
+	
+func update_buildings_cost():
+	var result = get_remaining_cost()
+	$CanvasLayer/DefenceOverlay/Remaining.text = "Remaining equipment cost: " + str(result) + " credits"
+	
 func is_defence_mode():
 	return mode == GameModes.DEFENCE
 	
@@ -54,7 +77,10 @@ func is_tactical_mode():
 	return mode == GameModes.TACTICS
 
 func generate_terrain():
-	# TODO
+	# TODO: Random holes
+	
+	# TODO: Random power sources
+	
 	pass
 	
 func accessible_cell(cell_code):
@@ -220,7 +246,6 @@ func _input(event):
 				remove_building(map_pos)
 
 func can_afford_building(selected_building):
-	print("Price: " + str(selected_building.price) + "    balance: " + str(Inventory.balance))
 	return selected_building.price <= Inventory.balance
 
 func building_at(map_pos):
@@ -237,6 +262,7 @@ func place_building(map_pos):
 	if selected_building and !building_at(map_pos):
 		var cell = game_field.get_cellv(map_pos)
 		if can_be_placed(selected_building.component_code, cell):
+			$Sfx/Put.play()
 			var Component = load("res://Components/Buildings/" + selected_building.component_code + "/" + selected_building.component_code + ".tscn")
 			var component = Component.instance()
 			component.code = map_pos_code(map_pos)
@@ -247,31 +273,28 @@ func place_building(map_pos):
 			update_balance(Inventory.balance - selected_building.price)
 		else:
 			print("CANNOT BE PLACED THERE")
+
+func earn(value):
+	update_balance(Inventory.balance + value)
 	
 func update_balance(new_balance):
 	Inventory.balance = new_balance
 	$CanvasLayer/TacticsOverlay/Control/Balance.text = "Balance: " + str(new_balance) + " credits"
+	$CanvasLayer/DefenceOverlay/Balance.text = "Balance: " + str(new_balance) + " credits"
 
-	
 func remove_building(map_pos):
 	var building = building_at(map_pos)
 	if building:
+		$Sfx/Remove.play()
 		update_balance(Inventory.balance + Components.definitions[building.type].price)
 		building.queue_free()
 		building_placement.erase(map_pos_code(map_pos))
 	
 func building_destroyed(code):
 	building_placement.erase(code)
-	for key in building_placement.keys():
-		print("> " + str(key) + ' = ' + building_placement[key].type)
-		if building_placement[key].type == "PowerSource" or building_placement[key].type == "Battery":
-			return
-		
-	print("ALL POWERSOURCES DESTROYED")
-	end_of_round()
 	
 func _process(delta):
-	if mode == GameModes.DEFENCE:
+	if mode == GameModes.DEFENCE and !paused:
 		current_time = current_time + delta
 		if enemies.size() > 0:
 			if enemies.size() > 0 and current_time > enemies[0].time:
@@ -284,6 +307,7 @@ func end_of_round():
 func release_enemy():
 	var enemy_config = enemies.pop_front()
 	var enemy = Enemy.instance()
+	enemy.setup("03")
 	game_field.add_child(enemy)
 	enemy.path = get_nearest_path(enemy_config.entry_cell, enemy_config.exit_cell)
 	enemy.exit_cell = enemy_config.exit_cell
@@ -291,9 +315,21 @@ func release_enemy():
 
 func selected_component(component):
 	selected_building = component
+	$Sfx/Select.play()
 	for building in $CanvasLayer/TacticsOverlay/Control/Buildings.get_children():
 		building.select(component == building)
 
 
 func _on_Button_pressed():
 	start_defence_mode()
+
+func _on_Abort_pressed():
+	abort_mission()
+
+func _on_Resume_pressed():
+	paused = false
+	$CanvasLayer/DefenceOverlay/AbortMenu.hide()
+
+func _on_mision_aboard():
+	update_balance(Inventory.balance + get_remaining_cost())
+	get_tree().change_scene("res://Scenes/Levels.tscn")

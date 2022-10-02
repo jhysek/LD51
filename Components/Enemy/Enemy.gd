@@ -1,5 +1,8 @@
 extends Area2D
 
+var Bullet = load("res://Components/Bullet/Bullet.tscn")
+var Toast = load("res://Components/Toast/Toast.tscn")
+
 enum States {
 	WALK,
 	ATTACK_WALK,
@@ -20,23 +23,36 @@ var state = States.WALK
 var attack_building
 var exit_cell
 var type
+var shoot_direction = Vector2(1,0)
 var config = {
 	speed = SPEED,
 	attack = ATTACK,
 	hitpoints = HP,
-	shooting = SHOOTING
+	shooting = SHOOTING,
+	price = 50
 }
 
 func _ready():
 	$HealthBar.setup(config.hitpoints)
 	set_physics_process(true)
 
+func setup(code):
+	if code == "01" or code == "02" or code == "03":
+		config = Components.enemies[code]
+		$Visual/e01.hide()
+		$Visual/e02.hide()
+		$Visual/e03.hide()
+		$Visual.get_node("e" + code).show()
+			
 func set_type(new_type):
 	if Components.enemies.has(new_type):
 		config = Components.enemies[new_type]
 		type = new_type
 
 func _physics_process(delta):
+	if game.paused:
+		return
+		
 	if state == States.ATTACK or state == States.DEAD:
 		return
 		
@@ -91,23 +107,50 @@ func building_destroyed():
 	print("NEXT TARGET: " + str(target))
 
 func triggered_by_power_pulse(from):
+	if game.paused:
+		return
+		
 	if state == States.WALK:
 		attack_building = from
 		attack_building.connect("building_destroyed", self, "building_destroyed")
-		print("Setting state to ATTACK_WALK")
-		state = States.ATTACK_WALK
-		var new_path = game.get_nearest_path(game_field.world_to_map(position), game_field.world_to_map(attack_building.position))
-		path = new_path
-		target = pop_next_target()
+		if config.shooting:
+			state = States.ATTACK
+			shoot_direction = position.direction_to(attack_building.position)
+			$AttackTimer.start()
+
+		else:
+			state = States.ATTACK_WALK
+			var new_path = game.get_nearest_path(game_field.world_to_map(position), game_field.world_to_map(attack_building.position))
+			path = new_path
+			target = pop_next_target()
 			
 func _on_AttackTimer_timeout():
+	if game.paused:
+		$AttackTimer.start()
+		return
+		
 	if attack_building and state == States.ATTACK:
 		if attack_building and attack_building.hitpoints > 0:
-			attack_building.hit(config.attack, self)
+			if config.shooting:
+				fire()
+			else:
+				attack_building.hit(config.attack, self)
 			$AttackTimer.start()
+
+func fire():
+	print("ENEMY FIRES AT " + str(shoot_direction))
+	var bullet = Bullet.instance()
+	game_field.add_child(bullet)
+	bullet.position = position
+	bullet.originator = self
+	bullet.fire(config.attack, shoot_direction)
 		
 func die():
 	print("Setting state to DEAD")
+	var toast = Toast.instance()
+	game_field.add_child(toast)
+	game.earn(config.price)
+	toast.say("+ " + str(config.price), { at = position })
 	state = States.DEAD
 	queue_free()
 			
@@ -117,7 +160,6 @@ func hit(hp):
 	print("ENEMY HIT.. HP left: " + str(config.hitpoints))
 	if config.hitpoints <= 0:
 		die()
-
 
 func _on_WalkAgainTimer_timeout():
 	state = States.WALK

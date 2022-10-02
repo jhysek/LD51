@@ -4,6 +4,7 @@ var SPEED = 2000
 var direction = Vector2.RIGHT
 var activated = false
 var power
+var originator = null
 
 func _ready():
 
@@ -26,6 +27,11 @@ func _on_Bullet_area_entered(area):
 		activated = false
 		area.hit(power)
 		queue_free()
-
+		
+	if originator and area.is_in_group("Building"):
+		area.hit(power)
+		activated = false
+		queue_free()
+		
 func _on_Timer_timeout():
 	queue_free()

@@ -9,16 +9,22 @@ var type = "MotionDetector"
 func _ready():
 	hitpoints = Components.definitions[type].hitpoints
 	$HealthBar.setup(hitpoints)
+	switch_to_tactical()
 
 	super()
 	game = get_node("/root/Game")
 	game.connect("tactical_mode_signal", self, 'switch_to_tactical')
 	game.connect("defence_mode_signal", self, 'switch_to_defence')
 	
+func price():
+	var price = Components.definitions[type].price 
+	return round(price * (hitpoints / float(Components.definitions[type].hitpoints)))
+	
 func switch_to_tactical():
 	tactical_mode = true
 	$Light2D.texture_scale = 0.33
 	$Light2D.energy = 1
+
 	
 func switch_to_defence():
 	tactical_mode = false

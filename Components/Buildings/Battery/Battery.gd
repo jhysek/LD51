@@ -13,6 +13,14 @@ func _ready():
 	$HealthBar.setup(hitpoints)
 	super()
 	
+func price():
+	var price = Components.definitions[type].price 
+	print("BATTERY PRICE = " + str(price))
+	print("BATTERY MAX HP: " + str(Components.definitions[type].hitpoints))
+	print("BATTERY HP: " + str(hitpoints))
+	print("BATTERU DAMAGE RATIO = " + str(hitpoints / float(Components.definitions[type].hitpoints)))
+	return round(price * (hitpoints / float(Components.definitions[type].hitpoints)))
+	
 func on_triggered():
 	print("BATTERY TRIGGERED")
 	current_capacity = min(max_capacity, current_capacity + power)
@@ -25,6 +33,9 @@ func on_power_changed():
 			consumer.refresh_power_changed()
 	
 func _on_Timer_timeout():
+	if game.paused:
+		return
+		
 	if current_capacity > 5:
 		current_capacity = max(0, min(max_capacity, current_capacity - 5))
 		if current_capacity > 0:

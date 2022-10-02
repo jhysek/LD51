@@ -1,0 +1,269 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Assets/LabelTheme.tres" type="Theme" id=1]
+[ext_resource path="res://Scenes/Levels.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/light.png" type="Texture" id=4]
+[ext_resource path="res://Assets/noisy-texture-300x300-o42-d51-c-000000-t1.png" type="Texture" id=5]
+[ext_resource path="res://Components/LevelCircle/LevelCircle.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/ok.wav" type="AudioStream" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 60
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "Idle"
+length = 10.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Light2D:texture_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3.9, 8.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 1.2, 1.0, 1.5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Light2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.5, 1.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Light2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2.1, 5.1, 7.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 163, 603 ), Vector2( 323, 92 ), Vector2( 976, 231 ), Vector2( 1012, 815 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Light2D:texture_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.2 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Light2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.5 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Light2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 163, 603 ) ]
+}
+
+[sub_resource type="Environment" id=4]
+background_mode = 4
+glow_enabled = true
+glow_intensity = 1.11
+glow_bloom = 0.25
+adjustment_brightness = 0.95
+adjustment_contrast = 0.91
+adjustment_saturation = 1.65
+
+[sub_resource type="DynamicFont" id=5]
+size = 30
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 1, 0, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 0, 0, 0.780392 )
+
+[node name="Levels" type="Node2D"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 377.0, 292.0, 466.0, 202.0, 566.0 ]
+}
+
+[node name="Balance" type="Label" parent="."]
+margin_left = 36.0
+margin_top = 730.0
+margin_right = 209.0
+margin_bottom = 752.0
+theme = ExtResource( 1 )
+text = "Balance: 1000 credits"
+
+[node name="Title" type="Label" parent="."]
+margin_left = 35.0
+margin_top = 44.0
+margin_right = 1165.0
+margin_bottom = 117.0
+custom_colors/font_color = Color( 1, 0, 1, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "DEFENCE ENGINEERS"
+align = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = -12.0
+margin_top = -10.0
+margin_right = 1235.0
+margin_bottom = 836.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+stretch_mode = 2
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 163, 603 )
+texture = ExtResource( 4 )
+texture_scale = 1.2
+energy = 1.5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Idle"
+playback_speed = 0.8
+anims/Idle = SubResource( 2 )
+anims/RESET = SubResource( 3 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 4 )
+
+[node name="Start mission" type="Button" parent="."]
+margin_left = 826.0
+margin_top = 682.0
+margin_right = 1164.0
+margin_bottom = 759.0
+custom_fonts/font = SubResource( 5 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/normal = SubResource( 7 )
+text = "START MISSION   >"
+
+[node name="Light2D2" type="Light2D" parent="."]
+position = Vector2( 1176, 777 )
+texture = ExtResource( 4 )
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 184, 377, 303, 377, 420, 377, 508, 292, 629, 292, 732, 202, 851, 292, 969, 377 )
+default_color = Color( 1, 1, 1, 0.235294 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D2" type="Line2D" parent="."]
+points = PoolVector2Array( 423, 377, 510, 466, 629, 466, 731, 566, 851, 466, 971, 377 )
+default_color = Color( 1, 1, 1, 0.235294 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D3" type="Line2D" parent="."]
+points = PoolVector2Array( 424, 377, 732, 377, 970, 377 )
+default_color = Color( 1, 1, 1, 0.235294 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D4" type="Line2D" parent="."]
+position = Vector2( 308, 0 )
+points = PoolVector2Array( 424, 377, 544, 292 )
+default_color = Color( 1, 1, 1, 0.235294 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D5" type="Line2D" parent="."]
+position = Vector2( 308, 0 )
+points = PoolVector2Array( 424, 377, 545, 466 )
+default_color = Color( 1, 1, 1, 0.235294 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Levels" type="Node2D" parent="."]
+position = Vector2( 75, 0 )
+
+[node name="01" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 105, 378 )
+selected = true
+
+[node name="02" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 228, 378 )
+
+[node name="03" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 348, 377 )
+
+[node name="04" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 434, 292 )
+
+[node name="05" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 434, 466 )
+
+[node name="06" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 553, 292 )
+
+[node name="07" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 553, 466 )
+
+[node name="08" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 656, 200 )
+
+[node name="09" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 656, 378 )
+
+[node name="10" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 656, 566 )
+
+[node name="11" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 776, 292 )
+
+[node name="12" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 776, 466 )
+
+[node name="13" parent="Levels" instance=ExtResource( 6 )]
+position = Vector2( 894, 377 )
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Click" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 7 )
+
+[connection signal="pressed" from="Start mission" to="." method="_on_Start_mission_pressed"]

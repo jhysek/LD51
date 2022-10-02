@@ -38,21 +38,27 @@ var  definitions = {
 }
 
 var enemies = {
-	"0": {
-		speed = 1000,
+	"01": {
+		speed = 50,
+		attack = 10,
+		hitpoints = 15,
+		shooting = false,
+		price = 50
+	},
+	
+	"02": {
+		speed = 25,
+		attack = 20,
+		hitpoints = 50,
+		shooting = false,
+		price = 200
+	},
+	
+	"03":  {
+		speed = 50,
 		attack = 10,
 		hitpoints = 10,
-	},
-	
-	"1": {
-		speed = 500,
-		attack = 20,
-		hitpoints = 50
-	},
-	
-	"2":  {
-		speed = 500,
-		attack = 10,
-		hitpoints = 10
+		shooting = true,
+		price = 100
 	}
 }
