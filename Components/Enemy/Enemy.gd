@@ -3,6 +3,8 @@ extends Area2D
 var Bullet = load("res://Components/Bullet/Bullet.tscn")
 var Toast = load("res://Components/Toast/Toast.tscn")
 
+signal enemy_is_gone
+
 enum States {
 	WALK,
 	ATTACK_WALK,
@@ -43,6 +45,7 @@ func setup(code):
 		$Visual/e02.hide()
 		$Visual/e03.hide()
 		$Visual.get_node("e" + code).show()
+		$HealthBar.setup(config.hitpoints)
 			
 func set_type(new_type):
 	if Components.enemies.has(new_type):
@@ -64,8 +67,8 @@ func _physics_process(delta):
 	else:
 		if state == States.WALK:
 			print("DONE")
+			emit_signal("enemy_is_gone")
 			queue_free()
-			#get_parent().get_node("Line").queue_free()
 		
 		if state == States.ATTACK_WALK:
 			print("Setting state to ATTACK")
@@ -158,6 +161,7 @@ func die():
 	game.earn(config.price)
 	toast.say("+ " + str(config.price), { at = position })
 	state = States.DEAD
+	emit_signal("enemy_is_gone")
 	queue_free()
 			
 func hit(hp):

@@ -28,6 +28,7 @@ var enemies = []
 func _ready():
 	randomize()
 	config = Levels.current_level()
+	print("LEVEL CONFIG: " + str(config))
 	Transition.openScene()
 	set_process(true)
 	set_process_input(true)
@@ -39,7 +40,7 @@ func start_tactics_mode():
 	$CanvasLayer/DefenceOverlay.hide()
 	generate_terrain()
 	generate_graph()
-	generate_enemy_waves(1)
+	generate_enemy_waves(config.enemies)
 	indicate_enemy_entrances()
 	emit_signal("tactical_mode_signal")
 
@@ -55,7 +56,12 @@ func start_defence_mode():
 func abort_mission():
 	if mode == GameModes.DEFENCE:
 		paused = true
-		$CanvasLayer/DefenceOverlay/AbortMenu/Label.text = "Remaining equipment will be sold for: " + str(get_remaining_cost()) + " credits"
+		var remaining = get_remaining_cost()
+		$CanvasLayer/DefenceOverlay/AbortMenu/Label.text = "Remaining equipment will be sold for: " + str(remaining) + " credits"
+		$CanvasLayer/DefenceOverlay/AbortMenu/Label2.text = "Total balance: " + str(remaining + Inventory.balance) + " credits" 
+		$CanvasLayer/DefenceOverlay/AbortMenu/Abort.show()
+		$CanvasLayer/DefenceOverlay/AbortMenu/Fail.hide()
+		$CanvasLayer/DefenceOverlay/AbortMenu/Success.hide()
 		$CanvasLayer/DefenceOverlay/AbortMenu.show()
 
 func get_remaining_cost():
@@ -77,11 +83,25 @@ func is_tactical_mode():
 	return mode == GameModes.TACTICS
 
 func generate_terrain():
-	# TODO: Random holes
-	
-	# TODO: Random power sources
-	
-	pass
+	var holes = randi() % 10 + 2
+	for i in range(holes):
+		var x = (randi() % int(map_size.x - 2)) + 1
+		var y = (randi() % int(map_size.y - 2)) + 1
+		
+		var double_hole = randi() % 10 > 6
+		if x < map_size.x - 3 and double_hole:
+			game_field.set_cell(x + 1, y, -1)
+			
+		double_hole = randi() % 10
+		if y < map_size.y - 3 and double_hole:
+			game_field.set_cell(x, y + 1, -1)
+			
+		game_field.set_cell(x, y, -1)
+
+	for i in range(config.sources):
+		var x = (randi() % int(map_size.x - 2)) + 1
+		var y = (randi() % int(map_size.y - 2)) + 1
+		game_field.set_cell(x, y, 1)
 	
 func accessible_cell(cell_code):
 	return cell_code >= 0
@@ -313,6 +333,7 @@ func release_enemy():
 	enemy.path = get_nearest_path(enemy_config.entry_cell, enemy_config.exit_cell)
 	enemy.exit_cell = enemy_config.exit_cell
 	enemy.spawn(enemy_config.entry_cell)
+	enemy.connect("enemy_is_gone", self, "check_end_mission")
 
 func selected_component(component):
 	selected_building = component
@@ -334,3 +355,43 @@ func _on_Resume_pressed():
 func _on_mision_aboard():
 	update_balance(Inventory.balance + get_remaining_cost())
 	get_tree().change_scene("res://Scenes/Levels.tscn")
+	
+func check_end_mission():
+	print("ENEMY IS GONE")
+	$FinishCheck.start()
+	
+func _on_FinishCheck_timeout():
+	var living_enemies = 0
+	for child in game_field.get_children():
+		if child.is_in_group("Enemy"):
+			living_enemies += 1
+	
+	print("LIVING ENEMIES: " + str(living_enemies))
+	print("TO GO: " + str(enemies.size()))
+	if enemies.size() == 0 and living_enemies == 0:
+		var has_power_source = false
+		for building in building_placement:
+			var type = building_placement[building].type
+			if type == "PowerSource" or type == "Battery":
+				has_power_source = true
+		
+		var remaining = get_remaining_cost()
+		$CanvasLayer/DefenceOverlay/AbortMenu/Label.text = "Remaining equipment will be sold for: " + str(remaining) + " credits"
+		$CanvasLayer/DefenceOverlay/AbortMenu/Label2.text = "Total balance: " + str(remaining + Inventory.balance) + " credits" 
+	
+		if has_power_source:
+			$CanvasLayer/DefenceOverlay/AbortMenu/Abort.hide()
+			$CanvasLayer/DefenceOverlay/AbortMenu/Fail.hide()
+			$CanvasLayer/DefenceOverlay/AbortMenu/Success.show()
+			$CanvasLayer/DefenceOverlay/AbortMenu.show()
+			Levels.current_level_succeeded()
+		else: 
+			$CanvasLayer/DefenceOverlay/AbortMenu/Abort.hide()
+			$CanvasLayer/DefenceOverlay/AbortMenu/Fail.show()
+			$CanvasLayer/DefenceOverlay/AbortMenu/Success.hide()
+			$CanvasLayer/DefenceOverlay/AbortMenu.show()
+			
+
+
+
+

@@ -64,7 +64,7 @@ func destroy():
 	position = Vector2(-2000, -2000)
 	$DestroyTimer.start()
 	
-func hit(hp, by):
+func hit(hp, by = null):
 	if hitpoints > 0:
 		hitpoints = hitpoints - hp
 		game.update_buildings_cost()

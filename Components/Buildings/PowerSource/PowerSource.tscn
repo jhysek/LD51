@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Components/Buildings/PowerSource/PowerSource.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/PowerSource/building.png" type="Texture" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://Components/Buildings/Battery/BatteryImpulse.tres" type="Animation" id=5]
 [ext_resource path="res://Components/Healthbar/HealthBar.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Components/Progressbar/TimeoutProgress.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Components/TurretComponent/box.png" type="Texture" id=8]
+[ext_resource path="res://Components/Buildings/PowerSource/icon.png" type="Texture" id=9]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 153.003
@@ -104,12 +106,22 @@ visible = false
 texture = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Visual"]
+visible = false
 texture = ExtResource( 2 )
 
 [node name="Impulse" type="Sprite" parent="Visual"]
 visible = false
 scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 4 )
+
+[node name="Block" type="Sprite" parent="Visual"]
+texture = ExtResource( 8 )
+
+[node name="Icon" type="Sprite" parent="Visual/Block"]
+modulate = Color( 0.992157, 0, 1, 1 )
+position = Vector2( 0, -4 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 9 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0

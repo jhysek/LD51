@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Assets/LabelTheme.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/Levels.gd" type="Script" id=2]
@@ -6,7 +6,8 @@
 [ext_resource path="res://Assets/light.png" type="Texture" id=4]
 [ext_resource path="res://Assets/noisy-texture-300x300-o42-d51-c-000000-t1.png" type="Texture" id=5]
 [ext_resource path="res://Components/LevelCircle/LevelCircle.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Assets/ok.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/button.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/LabelStandardTheme.tres" type="Theme" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 60
@@ -117,6 +118,9 @@ bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0, 0, 0.780392 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0, 0, 0, 0.419608 )
 
 [node name="LevelMenu" type="Node2D"]
 script = ExtResource( 2 )
@@ -260,6 +264,38 @@ position = Vector2( 776, 466 )
 
 [node name="13" parent="Levels" instance=ExtResource( 6 )]
 position = Vector2( 894, 377 )
+
+[node name="LevelInfo" type="Panel" parent="."]
+margin_left = 168.0
+margin_top = 476.0
+margin_right = 407.0
+margin_bottom = 599.0
+custom_styles/panel = SubResource( 9 )
+
+[node name="Label" type="Label" parent="LevelInfo"]
+modulate = Color( 1, 0, 1, 1 )
+margin_left = 13.0
+margin_top = 11.0
+margin_right = 67.0
+margin_bottom = 28.0
+theme = ExtResource( 8 )
+text = "Level: 01"
+
+[node name="Enemies" type="Label" parent="LevelInfo"]
+margin_left = 13.0
+margin_top = 40.0
+margin_right = 67.0
+margin_bottom = 57.0
+theme = ExtResource( 8 )
+text = "Enemies:  1"
+
+[node name="PowerSources" type="Label" parent="LevelInfo"]
+margin_left = 13.0
+margin_top = 68.0
+margin_right = 123.0
+margin_bottom = 85.0
+theme = ExtResource( 8 )
+text = "Power sources: 3"
 
 [node name="Sfx" type="Node" parent="."]
 

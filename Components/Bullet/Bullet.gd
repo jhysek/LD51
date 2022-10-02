@@ -22,14 +22,14 @@ func _physics_process(delta):
 		position += direction * SPEED * delta
 		
 func _on_Bullet_area_entered(area):
-	if area.is_in_group("Enemy"):
+	if area.is_in_group("Enemy") and area != originator:
 		print("ENEMY HIT")
 		activated = false
 		area.hit(power)
 		queue_free()
 		
 	if originator and area.is_in_group("Building"):
-		area.hit(power)
+		area.hit(power, originator)
 		activated = false
 		queue_free()
 		
