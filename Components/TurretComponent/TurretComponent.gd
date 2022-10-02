@@ -14,21 +14,45 @@ var type = "Building"
 
 onready var turret
 var power = 0
+var game
+var tactical_mode
 
 func super():
+	game = get_node("/root/Game")
+	game.connect("tactical_mode_signal", self, 'switch_to_tactical')
+	game.connect("defence_mode_signal", self, 'switch_to_defence')
+	
+func after_switch_to_tactical():
 	pass
+	
+func after_switch_to_defence():
+	pass
+	
+func switch_to_tactical():
+	tactical_mode = true
+	if has_node("Light2D"):
+		$Light2D.texture_scale = 0.33
+		$Light2D.energy = 1
+	after_switch_to_tactical()
+	
+func switch_to_defence():
+	tactical_mode = false
+	if has_node("Light2D"):
+		$Light2D.texture_scale = 0.01
+		$Light2D.energy = 0
+	
+	after_switch_to_defence()
 
 func on_triggered():
 	pass
 	
-func trigger(input_power):
-	print(name + " is TRIGGERED with power " + str(input_power))
+func trigger(input_power, params = null):
 	power = input_power
 	on_triggered()
 	
 func trigger_outputs(parameter = null):
 	for consumer in get_overlapping_areas():
-		print("overlas with " + str(consumer))
+		print("overlays with " + str(consumer))
 		if consumer.is_in_group("PowerConsumer") and consumer != get_parent():
 			print("triggering -> " + consumer.name)
 			consumer.trigger(power, parameter)

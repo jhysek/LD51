@@ -1,11 +1,12 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Components/Buildings/PowerSource/PowerSource.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/PowerSource/building.png" type="Texture" id=2]
 [ext_resource path="res://Components/Buildings/PowerSource/range.png" type="Texture" id=3]
 [ext_resource path="res://Components/Buildings/PowerSource/impulse.png" type="Texture" id=4]
-[ext_resource path="res://Components/Buildings/PowerSource/PowerSourceImpulse.tres" type="Animation" id=5]
+[ext_resource path="res://Components/Buildings/Battery/BatteryImpulse.tres" type="Animation" id=5]
 [ext_resource path="res://Components/Healthbar/HealthBar.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Components/Progressbar/TimeoutProgress.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 153.003
@@ -90,12 +91,6 @@ tracks/4/keys = {
 "values": [ 0.4 ]
 }
 
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.992157, 0, 1, 1 )
-
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0, 0, 0, 1 )
-
 [node name="PowerSource" type="Area2D" groups=["PowerSource"]]
 script = ExtResource( 1 )
 
@@ -135,16 +130,7 @@ texture_scale = 0.4
 wait_time = 0.2
 one_shot = true
 
-[node name="TimeoutProgress" type="ProgressBar" parent="."]
-margin_left = -22.0
-margin_top = 10.0
-margin_right = 22.0
-margin_bottom = 14.0
-custom_styles/fg = SubResource( 4 )
-custom_styles/bg = SubResource( 5 )
-step = 1.0
-value = 100.0
-percent_visible = false
+[node name="TimeoutProgress" parent="." instance=ExtResource( 7 )]
 
 [node name="HealthBar" parent="." instance=ExtResource( 6 )]
 

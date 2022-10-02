@@ -19,6 +19,7 @@ var exit_cell
 
 
 func _ready():
+	$HealthBar.setup(hitpoints)
 	set_physics_process(true)
 
 func _physics_process(delta):
@@ -29,7 +30,6 @@ func _physics_process(delta):
 		if position.distance_to(target) > game.CELL_SIZE.x / 20:
 			position = position + position.direction_to(target) * SPEED * delta
 		else:
-			print("jumping to next target...")
 			target = pop_next_target()
 	else:
 		if state == States.WALK:
@@ -90,6 +90,7 @@ func die():
 			
 func hit(hp):
 	hitpoints -= hp
+	$HealthBar.set_value(hitpoints)
 	print("ENEMY HIT.. HP left: " + str(hitpoints))
 	if hitpoints <= 0:
 		die()

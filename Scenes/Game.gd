@@ -75,7 +75,6 @@ func generate_graph():
   # Add nodes
 	for x in range(map_size.x):
 		for y in range(map_size.y):
-			print(str(x) + "x" + str(y) + " => " + str(game_field.get_cell(x,y)))
 			if accessible_cell(game_field.get_cell(x, y)):
 				traversing_graph.add_point(get_cell_id(x, y), Vector3(x, y, 0))
 
@@ -228,7 +227,6 @@ func place_building(map_pos):
 	if selected_building and !building_at(map_pos):
 		var cell = game_field.get_cellv(map_pos)
 		if can_be_placed(selected_building.component_code, cell):
-			print("res://Components/Buildings/" + selected_building.component_code)
 			var Component = load("res://Components/Buildings/" + selected_building.component_code + "/" + selected_building.component_code + ".tscn")
 			var component = Component.instance()
 			component.code = map_pos_code(map_pos)
@@ -259,7 +257,6 @@ func _process(delta):
 	if mode == GameModes.DEFENCE:
 		current_time = current_time + delta
 		if enemies.size() > 0:
-			print(str(current_time) + " | next: " + str(enemies[0].time))
 			if enemies.size() > 0 and current_time > enemies[0].time:
 				release_enemy()
 

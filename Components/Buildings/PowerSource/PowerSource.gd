@@ -1,6 +1,6 @@
 extends Area2D
 
-export var power = 50
+export var power = 100
 var state = 1
 var building = self
 var hitpoints = 100
@@ -37,7 +37,6 @@ func switch_to_defence():
 	
 func _process(delta):
 	if !tactical_mode:
-		print($TimeoutProgress.value)
 		cooldown += delta * 10
 		$TimeoutProgress.value = round(cooldown)
 	
