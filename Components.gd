@@ -27,6 +27,13 @@ var  definitions = {
 		name = "Radar",
 		description = "Scans surrounding whenever receives a power pulse. If detects enemy, broadcasts powerpulse with location data.",
 		hitpoints = 50
+	},
+	
+	"LaserAbsorber": {
+		price = 100,
+		name = "Laser Absorber",
+		description = "When hit by laser, absorbs power and broadcast it as energy pulse.",
+		hitpoints = 50
 	}
 }
 

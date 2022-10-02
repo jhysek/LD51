@@ -94,7 +94,8 @@ func destroy():
 	
 func hit(hp, by):
 	hitpoints = hitpoints - hp
+	$HealthBar.set_value(hitpoints)
 	print("Damage... HP: " + str(hitpoints))
 	if hitpoints <= 0:
-		by.building_destroyed(self)
+		by.building_destroyed()
 		destroy()

@@ -2,7 +2,7 @@ extends Area2D
 
 
 var state = TurretComponent.States.DISABLED
-var building = get_parent()
+onready var building = get_parent()
 
 func _ready():
 	pass # Replace with function body.

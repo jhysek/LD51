@@ -12,8 +12,6 @@ func _ready():
 	
 func fire(fire_power, fire_direction = Vector2.RIGHT):
 	power = fire_power
-
-	print("fire to " + str(fire_direction))
 	direction = fire_direction 
 	activated = true
 	$Timer.start()

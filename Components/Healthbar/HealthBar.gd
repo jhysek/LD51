@@ -9,8 +9,11 @@ func setup(maximum, new_value = null):
 		
 	if value == maximum:
 		hide()
+	else: 
+		show()
 	
 func set_value(new_value):
+	print("HB setting value: " + str(new_value) + " MAX: " + str(max_value))
 	value = 	 min(max(0, new_value), max_value)
 	if value < max_value:
 		show()

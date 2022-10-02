@@ -3,12 +3,15 @@ extends Area2D
 enum States {
 	WALK,
 	ATTACK_WALK,
+	ATTACK_SHOOT,
 	ATTACK,
 	DEAD
 }
-export var hitpoints = 100
-export var force = 10
+export var HP = 100
+export var ATTACK = 10
 export var SPEED = 50
+export var SHOOTING = false
+
 var path = []
 var game_field
 var game
@@ -16,11 +19,22 @@ var target
 var state = States.WALK
 var attack_building
 var exit_cell
-
+var type
+var config = {
+	speed = SPEED,
+	attack = ATTACK,
+	hitpoints = HP,
+	shooting = SHOOTING
+}
 
 func _ready():
-	$HealthBar.setup(hitpoints)
+	$HealthBar.setup(config.hitpoints)
 	set_physics_process(true)
+
+func set_type(new_type):
+	if Components.enemies.has(new_type):
+		config = Components.enemies[new_type]
+		type = new_type
 
 func _physics_process(delta):
 	if state == States.ATTACK || state == States.DEAD:
@@ -28,7 +42,7 @@ func _physics_process(delta):
 		
 	if target:
 		if position.distance_to(target) > game.CELL_SIZE.x / 20:
-			position = position + position.direction_to(target) * SPEED * delta
+			position = position + position.direction_to(target) * config.speed * delta
 		else:
 			target = pop_next_target()
 	else:
@@ -73,24 +87,29 @@ func building_destroyed():
 
 func _on_Enemy_area_entered(area):
 	if state == States.WALK and area.is_in_group("PowerSource"):
+		print("ENEMY entered area " + str(area))
+		print("=> AREA BUILDING " + str(area.building))
 		attack_building = area.building
 		if attack_building:
+			print("Attacking: " + str(attack_building))
 			state = States.ATTACK_WALK
 			var new_path = game.get_nearest_path(game_field.world_to_map(position), game_field.world_to_map(attack_building.position))
 			path = new_path
 			target = pop_next_target()
+		else:
+			print("No building to attack")
 			
 func _on_AttackTimer_timeout():
 	if attack_building and state == States.ATTACK:
-		attack_building.hit(force, self)
+		attack_building.hit(config.attack, self)
 		
 func die():
 	state = States.DEAD
 	queue_free()
 			
 func hit(hp):
-	hitpoints -= hp
-	$HealthBar.set_value(hitpoints)
-	print("ENEMY HIT.. HP left: " + str(hitpoints))
-	if hitpoints <= 0:
+	config.hitpoints -= hp
+	$HealthBar.set_value(config.hitpoints)
+	print("ENEMY HIT.. HP left: " + str(config.hitpoints))
+	if config.hitpoints <= 0:
 		die()

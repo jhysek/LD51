@@ -7,6 +7,9 @@ var parameter
 var type = "MotionDetector"
 
 func _ready():
+	hitpoints = Components.definitions[type].hitpoints
+	$HealthBar.setup(hitpoints)
+
 	super()
 	game = get_node("/root/Game")
 	game.connect("tactical_mode_signal", self, 'switch_to_tactical')

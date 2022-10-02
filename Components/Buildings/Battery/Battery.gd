@@ -4,10 +4,13 @@ onready var max_capacity = 500
 onready var current_capacity = 250
 var type = "Battery"
 
+onready var building = self
+
 func _ready():
 	$TimeoutProgress.max_value = max_capacity
 	$TimeoutProgress.value = current_capacity
-	$HealthBar.setup(Components.definitions.Battery.hitpoints)
+	hitpoints = Components.definitions[type].hitpoints
+	$HealthBar.setup(hitpoints)
 	super()
 	
 func on_triggered():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Components/Buildings/MotionDetector/MotionDetector.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/MotionDetector/icon_white.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Components/Buildings/MotionDetector/RadarArea.gd" type="Script" id=5]
 [ext_resource path="res://Components/Buildings/MotionDetector/impulse.png" type="Texture" id=6]
 [ext_resource path="res://Components/Buildings/PowerSource/PowerSource.tres" type="Animation" id=7]
+[ext_resource path="res://Components/Healthbar/HealthBar.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 29, 19.5 )
@@ -71,8 +72,11 @@ anims/RESET = SubResource( 3 )
 
 [node name="Light2D" type="Light2D" parent="."]
 texture = ExtResource( 6 )
-texture_scale = 0.33
+texture_scale = 0.01
 color = Color( 0.192157, 0.298039, 0.141176, 1 )
+energy = 0.0
+
+[node name="HealthBar" parent="." instance=ExtResource( 8 )]
 
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]

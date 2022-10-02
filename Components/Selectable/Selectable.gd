@@ -31,3 +31,12 @@ func select(is_selected):
 func _on_Selectable_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed:
 		game.selected_component(self)
+
+
+func _on_Selectable_mouse_entered():
+	$Hover.show()
+	$Sfx/Hover.play()
+
+
+func _on_Selectable_mouse_exited():
+	$Hover.hide()

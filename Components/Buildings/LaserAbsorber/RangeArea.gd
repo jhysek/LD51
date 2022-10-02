@@ -1,7 +1,7 @@
 extends Area2D
 
 var state = TurretComponent.States.ACTIVE
-onready var building = get_parent()
+var building = get_parent()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
