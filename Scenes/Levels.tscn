@@ -118,7 +118,7 @@ bg_color = Color( 0, 0, 0, 1 )
 [sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0, 0, 0.780392 )
 
-[node name="Levels" type="Node2D"]
+[node name="LevelMenu" type="Node2D"]
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_horizontal_guides_": [ 377.0, 292.0, 466.0, 202.0, 566.0 ]

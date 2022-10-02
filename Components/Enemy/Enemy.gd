@@ -77,6 +77,12 @@ func pop_next_target():
 		var path_item = path[0]
 		var next_target = game_field.map_to_world(Vector2(path_item.x, path_item.y)) + game.CELL_SIZE / 2
 		path.remove(0)
+		
+		if position.x - next_target.x > 0:
+			$Visual.scale = Vector2(1,1)
+		else:
+			$Visual.scale = Vector2(-1,1)
+				
 		return next_target
 	else:
 		return null

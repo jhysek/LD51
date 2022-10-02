@@ -22,4 +22,7 @@ texture = ExtResource( 1 )
 [node name="Click" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource( 3 )
 
+[node name="Nono" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 3 )
+
 [connection signal="input_event" from="." to="." method="_on_01_input_event"]

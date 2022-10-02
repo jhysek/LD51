@@ -1,6 +1,6 @@
-extends Node
+extends Node2D
 
-var selected_level = 0
+var selected_level = "01"
 
 var all = {
 	"01": {

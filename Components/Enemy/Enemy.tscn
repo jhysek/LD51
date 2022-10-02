@@ -181,6 +181,7 @@ texture = ExtResource( 5 )
 offset = Vector2( 0, 40 )
 
 [node name="e03" type="Node2D" parent="Visual"]
+position = Vector2( 0, -12 )
 
 [node name="Body" type="Sprite" parent="Visual/e03"]
 position = Vector2( 0, -24 )

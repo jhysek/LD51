@@ -26,9 +26,9 @@ var config = {}
 var enemies = []
 
 func _ready():
+	randomize()
 	config = Levels.current_level()
 	Transition.openScene()
-	randomize()
 	set_process(true)
 	set_process_input(true)
 	start_tactics_mode()
@@ -182,6 +182,7 @@ func get_exit_cell(field_rec, entry_cell, direction):
 		3: return entry_cell + Vector2(field_rec.size.x - 1, 0)
 	
 func generate_enemy_waves(enemy_count):	
+	randomize()
 	var delay = 0
 	var field_rect = $GameField.get_used_rect()
 	for enemy in range(enemy_count):
