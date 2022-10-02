@@ -32,7 +32,7 @@ func _ready():
 	
 func start_tactics_mode():
 	mode = GameModes.TACTICS
-	$CanvasLayer/TacticsOveraly.show()
+	$CanvasLayer/TacticsOverlay.show()
 	$CanvasLayer/DefenceOverlay.hide()
 	generate_terrain()
 	generate_graph()
@@ -43,7 +43,7 @@ func start_tactics_mode():
 func start_defence_mode():
 	mode = GameModes.DEFENCE
 	current_time = 0
-	$CanvasLayer/TacticsOveraly.hide()
+	$CanvasLayer/TacticsOverlay.hide()
 	$CanvasLayer/DefenceOverlay.show()
 	emit_signal("defence_mode_signal")
 
@@ -207,11 +207,21 @@ func _input(event):
 		if event is InputEventMouseButton and map_pos and event.pressed:
 			if selected_building: 
 				if !building_at(map_pos):
+					if !can_afford_building(selected_building):
+						$GameField/Toast.say("Not enough money.", { 
+							at = $GameField/Cursor.position - Vector2(0, CELL_SIZE.x)
+						})
+						return
+					
 					place_building(map_pos)
 					return
 					
 			if building_at(map_pos):
 				remove_building(map_pos)
+
+func can_afford_building(selected_building):
+	print("Price: " + str(selected_building.price) + "    balance: " + str(Inventory.balance))
+	return selected_building.price <= Inventory.balance
 
 func building_at(map_pos):
 	if building_placement.has(map_pos_code(map_pos)):
@@ -234,12 +244,19 @@ func place_building(map_pos):
 			game_field.add_child(component)
 			component.position = game_field.map_to_world(map_pos) + CELL_SIZE / 2
 			building_placement[map_pos_code(map_pos)] = component
+			update_balance(Inventory.balance - selected_building.price)
 		else:
 			print("CANNOT BE PLACED THERE")
+	
+func update_balance(new_balance):
+	Inventory.balance = new_balance
+	$CanvasLayer/TacticsOverlay/Control/Balance.text = "Balance: " + str(new_balance) + " credits"
+
 	
 func remove_building(map_pos):
 	var building = building_at(map_pos)
 	if building:
+		update_balance(Inventory.balance + Components.definitions[building.type].price)
 		building.queue_free()
 		building_placement.erase(map_pos_code(map_pos))
 	
@@ -266,7 +283,6 @@ func end_of_round():
 
 func release_enemy():
 	var enemy_config = enemies.pop_front()
-	print("RELEASING ENEMY! -> " + str(enemy_config))
 	var enemy = Enemy.instance()
 	game_field.add_child(enemy)
 	enemy.path = get_nearest_path(enemy_config.entry_cell, enemy_config.exit_cell)
@@ -275,7 +291,7 @@ func release_enemy():
 
 func selected_component(component):
 	selected_building = component
-	for building in $CanvasLayer/TacticsOveraly/Control/Buildings.get_children():
+	for building in $CanvasLayer/TacticsOverlay/Control/Buildings.get_children():
 		building.select(component == building)
 
 

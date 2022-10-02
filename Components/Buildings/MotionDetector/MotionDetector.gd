@@ -4,6 +4,7 @@ export var detect_range = 100
 export var power_consumption = 10
 var building = self
 var parameter
+var type = "MotionDetector"
 
 func _ready():
 	super()

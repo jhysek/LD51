@@ -10,7 +10,6 @@ enum States {
 var state = States.ACTIVE
 var id = name
 var code
-var type = "Building"
 
 onready var turret
 var power = 0

@@ -18,9 +18,9 @@ texture = ExtResource( 3 )
 
 [node name="Icon" type="Sprite" parent="Visual/Block"]
 modulate = Color( 1, 1, 1, 0.709804 )
-position = Vector2( -9.53674e-07, -9.53674e-07 )
+position = Vector2( -9.53674e-07, -4 )
 rotation = 0.00606842
-scale = Vector2( 0.15, 0.15 )
+scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 2 )
 offset = Vector2( 10, 0.5 )
 

@@ -4,11 +4,12 @@ onready var Bullet = load("res://Components/Bullet/Bullet.tscn")
 
 var initial_component
 var outputs = []
+var type = "Turret"
+var direction = Vector2.RIGHT
 
 var error = ""
 
 func trigger(power, params = {}):
-	var direction = Vector2.RIGHT
 	var angle = 0
 	
 	var icon = $Visual/Block/Icon
@@ -18,8 +19,7 @@ func trigger(power, params = {}):
 		angle = position.angle_to_point(params.target)
 		$Tween.interpolate_property(icon, "rotation_degrees", icon.rotation_degrees, rad2deg(angle) - 180, 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$Tween.start()
-	else:
-		icon.rotation_degrees = 0
+
 		
 	if state == States.ACTIVE:
 		print(name + " gets power pulse")

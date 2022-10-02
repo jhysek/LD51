@@ -2,10 +2,12 @@ extends TurretComponent
 
 onready var max_capacity = 500
 onready var current_capacity = 250
+var type = "Battery"
 
 func _ready():
 	$TimeoutProgress.max_value = max_capacity
 	$TimeoutProgress.value = current_capacity
+	$HealthBar.setup(Components.definitions.Battery.hitpoints)
 	super()
 	
 func on_triggered():
