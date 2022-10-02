@@ -1,5 +1,7 @@
 extends Area2D
 
+signal building_destroyed
+
 export var hitpoints = 100
 enum States {
 	DISABLED = 0,
@@ -51,9 +53,10 @@ func trigger(input_power, params = null):
 	
 func trigger_outputs(parameter = null):
 	for consumer in get_overlapping_areas():
-		print("overlays with " + str(consumer))
+		if consumer.is_in_group("Enemy"):
+			consumer.triggered_by_power_pulse(self)
+		
 		if consumer.is_in_group("PowerConsumer") and consumer != get_parent():
-			print("triggering -> " + consumer.name)
 			consumer.trigger(power, parameter)
 			
 func on_power_change():
@@ -88,14 +91,20 @@ func refresh_power_connection(removed_area = null):
 	power_off()
 	
 func destroy():
-	print("BUILDING DESTROYED")
+	emit_signal("building_destroyed")
 	get_node("/root/Game").building_destroyed(code)
-	queue_free()
+	hide()
+	position = Vector2(-2000, -2000)
+	$DestroyTimer.start()
 	
 func hit(hp, by):
-	hitpoints = hitpoints - hp
-	$HealthBar.set_value(hitpoints)
-	print("Damage... HP: " + str(hitpoints))
-	if hitpoints <= 0:
-		by.building_destroyed()
-		destroy()
+	if hitpoints > 0:
+		hitpoints = hitpoints - hp
+		$HealthBar.set_value(hitpoints)
+		print("Damage... HP: " + str(hitpoints))
+		if hitpoints <= 0:
+			#by.building_destroyed()
+			destroy()
+
+func _on_DestroyTimer_timeout():
+	queue_free()

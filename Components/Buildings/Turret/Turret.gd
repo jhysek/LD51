@@ -19,7 +19,6 @@ func trigger(power, params = {}):
 		angle = position.angle_to_point(params.target)
 		$Tween.interpolate_property(icon, "rotation_degrees", icon.rotation_degrees, rad2deg(angle) - 180, 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$Tween.start()
-
 		
 	if state == States.ACTIVE:
 		print(name + " gets power pulse")

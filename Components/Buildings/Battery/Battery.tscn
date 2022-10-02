@@ -118,7 +118,10 @@ texture_scale = 0.33
 wait_time = 0.2
 one_shot = true
 
+[node name="DestroyTimer" type="Timer" parent="."]
+
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="DistributionDelay" to="." method="_on_DistributionDelay_timeout"]
+[connection signal="timeout" from="DestroyTimer" to="." method="_on_DestroyTimer_timeout"]

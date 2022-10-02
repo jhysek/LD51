@@ -23,8 +23,12 @@ shape = SubResource( 3 )
 visible = false
 
 [node name="AttackTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
 
-[connection signal="area_entered" from="." to="." method="_on_Enemy_area_entered"]
+[node name="WalkAgainTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
+[connection signal="timeout" from="WalkAgainTimer" to="." method="_on_WalkAgainTimer_timeout"]

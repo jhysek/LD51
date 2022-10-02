@@ -134,6 +134,11 @@ one_shot = true
 
 [node name="HealthBar" parent="." instance=ExtResource( 6 )]
 
+[node name="DestroyTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="DistributionDelay" to="." method="_on_DistributionDelay_timeout"]
+[connection signal="timeout" from="DestroyTimer" to="." method="_on_DestroyTimer_timeout"]

@@ -60,6 +60,9 @@ func decrease_capacity(by):
 func _on_DistributionDelay_timeout():
 	print("BATTERY TIMEOUT")
 	for consumer in $RangeArea.get_overlapping_areas():
+		if consumer.is_in_group("Enemy"):
+			consumer.triggered_by_power_pulse(self)
+			
 		print("overlas with " + str(consumer))
 		if consumer.is_in_group("PowerConsumer") and consumer != self:
 			print("triggering -> " + consumer.name)

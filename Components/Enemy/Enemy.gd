@@ -37,7 +37,7 @@ func set_type(new_type):
 		type = new_type
 
 func _physics_process(delta):
-	if state == States.ATTACK || state == States.DEAD:
+	if state == States.ATTACK or state == States.DEAD:
 		return
 		
 	if target:
@@ -52,6 +52,7 @@ func _physics_process(delta):
 			#get_parent().get_node("Line").queue_free()
 		
 		if state == States.ATTACK_WALK:
+			print("Setting state to ATTACK")
 			state = States.ATTACK			
 			$AttackTimer.start()
 			
@@ -79,31 +80,34 @@ func spawn(map_pos):
 	target = pop_next_target()
 
 func building_destroyed():
-	attack_building = null
-	$AttackTimer.stop()
+	print("Enemy knows that building was destroyed " + str(state))
 	path = game.get_nearest_path(game_field.world_to_map(position), exit_cell)
 	target = pop_next_target()
-	state = States.WALK
+	print("enemy: Setting state to WALK")
+	$WalkAgainTimer.start()
+	attack_building = null
+	$AttackTimer.stop()
+	print("PATH: " + str(path))
+	print("NEXT TARGET: " + str(target))
 
-func _on_Enemy_area_entered(area):
-	if state == States.WALK and area.is_in_group("PowerSource"):
-		print("ENEMY entered area " + str(area))
-		print("=> AREA BUILDING " + str(area.building))
-		attack_building = area.building
-		if attack_building:
-			print("Attacking: " + str(attack_building))
-			state = States.ATTACK_WALK
-			var new_path = game.get_nearest_path(game_field.world_to_map(position), game_field.world_to_map(attack_building.position))
-			path = new_path
-			target = pop_next_target()
-		else:
-			print("No building to attack")
+func triggered_by_power_pulse(from):
+	if state == States.WALK:
+		attack_building = from
+		attack_building.connect("building_destroyed", self, "building_destroyed")
+		print("Setting state to ATTACK_WALK")
+		state = States.ATTACK_WALK
+		var new_path = game.get_nearest_path(game_field.world_to_map(position), game_field.world_to_map(attack_building.position))
+		path = new_path
+		target = pop_next_target()
 			
 func _on_AttackTimer_timeout():
 	if attack_building and state == States.ATTACK:
-		attack_building.hit(config.attack, self)
+		if attack_building and attack_building.hitpoints > 0:
+			attack_building.hit(config.attack, self)
+			$AttackTimer.start()
 		
 func die():
+	print("Setting state to DEAD")
 	state = States.DEAD
 	queue_free()
 			
@@ -113,3 +117,8 @@ func hit(hp):
 	print("ENEMY HIT.. HP left: " + str(config.hitpoints))
 	if config.hitpoints <= 0:
 		die()
+
+
+func _on_WalkAgainTimer_timeout():
+	state = States.WALK
+	

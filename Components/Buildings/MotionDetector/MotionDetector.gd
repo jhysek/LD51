@@ -46,6 +46,11 @@ func trigger_outputs(input_parameter = null):
 func _on_DistributionDelay_timeout():
 	for consumer in $RadarArea.get_overlapping_areas():
 		print("overlas with " + str(consumer))
+		if consumer.is_in_group("Enemy"):
+			consumer.triggered_by_power_pulse(self)
+			
 		if consumer.is_in_group("PowerConsumer") and consumer != self:
 			print("triggering -> " + consumer.name)
 			consumer.trigger(power, parameter)
+
+

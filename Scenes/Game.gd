@@ -264,7 +264,7 @@ func building_destroyed(code):
 	building_placement.erase(code)
 	for key in building_placement.keys():
 		print("> " + str(key) + ' = ' + building_placement[key].type)
-		if building_placement[key].type == "PowerSource":
+		if building_placement[key].type == "PowerSource" or building_placement[key].type == "Battery":
 			return
 		
 	print("ALL POWERSOURCES DESTROYED")

@@ -1,5 +1,7 @@
 extends Area2D
 
+signal building_destroyed
+
 export var power = 100
 var state = 1
 var building = self
@@ -36,7 +38,7 @@ func switch_to_defence():
 	$Light2D.energy = 0
 	
 func _process(delta):
-	if !tactical_mode:
+	if !tactical_mode and state == 1:
 		cooldown += delta * 10
 		$TimeoutProgress.value = round(cooldown)
 	
@@ -50,17 +52,21 @@ func _on_Timer_timeout():
 		print("TACTICAL MODE")
 
 func destroy():
-	print("BUILDING DESTROYED")
+	$Timer.stop()
+	emit_signal("building_destroyed")
 	get_node("/root/Game").building_destroyed(code)
-	queue_free()
+	state = 0
+	hide()
+	position = Vector2(-2000, -2000)
+	$DestroyTimer.start()
 	
 func hit(hp, by):
-	hitpoints = hitpoints - hp
-	$HealthBar.set_value(hitpoints)
-	print("Damage... HP: " + str(hitpoints))
-	if hitpoints <= 0:
-		by.building_destroyed()
-		destroy()
+	if hitpoints > 0:
+		hitpoints = hitpoints - hp
+		$HealthBar.set_value(hitpoints)
+		print("Damage... HP: " + str(hitpoints))
+		if hitpoints <= 0:
+			destroy()
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name != "Idle":
@@ -69,5 +75,11 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func _on_DistributionDelay_timeout():
 	for consumer in get_overlapping_areas():
+		if consumer.is_in_group("Enemy"):
+			consumer.triggered_by_power_pulse(self)
+			
 		if consumer.is_in_group("PowerConsumer"):
 			consumer.trigger(power)
+
+func _on_DestroyTimer_timeout():
+	queue_free()

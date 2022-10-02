@@ -10,6 +10,9 @@ func _ready():
 func trigger_outputs(input_parameter = null):
 	$AnimationPlayer.play("Impulse")
 	for consumer in $RangeArea.get_overlapping_areas():
+		if consumer.is_in_group("Enemy"):
+			consumer.triggered_by_power_pulse(self)
+			
 		if consumer.is_in_group("PowerConsumer") and consumer != self:
 			consumer.trigger(power)
 

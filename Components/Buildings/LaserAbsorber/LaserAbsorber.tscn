@@ -105,6 +105,10 @@ anims/RESET = SubResource( 4 )
 texture = ExtResource( 6 )
 texture_scale = 0.33
 
+[node name="DestroyTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
 [connection signal="area_entered" from="." to="." method="_on_LaserAbsorber_area_entered"]
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]
