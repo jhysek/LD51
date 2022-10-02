@@ -2,6 +2,8 @@ extends Area2D
 
 signal building_destroyed
 
+const MINE_QUANTITY = 500
+
 export var power = 100
 var state = 1
 var building = self
@@ -50,6 +52,7 @@ func _on_Timer_timeout():
 	if game.is_defence_mode():
 		$TimeoutProgress.value = 0
 		cooldown = 0
+		game.mine(MINE_QUANTITY)
 		$AnimationPlayer.play("Impulse")
 		$DistributionDelay.start()
 	else:
@@ -88,3 +91,8 @@ func _on_DistributionDelay_timeout():
 
 func _on_DestroyTimer_timeout():
 	queue_free()
+
+
+func _on_PowerSource_area_entered(area):
+	if area.is_in_group("Enemy"):
+		area.triggered_by_power_pulse(self)

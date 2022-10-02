@@ -18,7 +18,7 @@ var  definitions = {
 	"Battery": {
 		price = 500,
 		name = "Battery / buffer",
-		description = "Stores energy and release it in smaller pulses every 1s. Charges if receives power pulse.",
+		description = "Stores energy and release it in smaller pulses every 1s. Charges if receives power pulse. It's pre-charged.",
 		hitpoints = 100
 	},
 	
@@ -41,7 +41,7 @@ var enemies = {
 	"01": {
 		speed = 50,
 		attack = 10,
-		hitpoints = 15,
+		hitpoints = 40,
 		shooting = false,
 		price = 50
 	},
@@ -49,7 +49,7 @@ var enemies = {
 	"02": {
 		speed = 25,
 		attack = 20,
-		hitpoints = 50,
+		hitpoints = 100,
 		shooting = false,
 		price = 200
 	},
@@ -57,7 +57,7 @@ var enemies = {
 	"03":  {
 		speed = 50,
 		attack = 10,
-		hitpoints = 10,
+		hitpoints = 30,
 		shooting = true,
 		price = 100
 	}

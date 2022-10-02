@@ -269,7 +269,7 @@ position = Vector2( 894, 377 )
 margin_left = 168.0
 margin_top = 476.0
 margin_right = 407.0
-margin_bottom = 599.0
+margin_bottom = 606.0
 custom_styles/panel = SubResource( 9 )
 
 [node name="Label" type="Label" parent="LevelInfo"]
@@ -283,19 +283,27 @@ text = "Level: 01"
 
 [node name="Enemies" type="Label" parent="LevelInfo"]
 margin_left = 13.0
-margin_top = 40.0
-margin_right = 67.0
-margin_bottom = 57.0
+margin_top = 69.0
+margin_right = 82.0
+margin_bottom = 86.0
 theme = ExtResource( 8 )
 text = "Enemies:  1"
 
 [node name="PowerSources" type="Label" parent="LevelInfo"]
 margin_left = 13.0
-margin_top = 68.0
+margin_top = 97.0
 margin_right = 123.0
-margin_bottom = 85.0
+margin_bottom = 114.0
 theme = ExtResource( 8 )
 text = "Power sources: 3"
+
+[node name="Requirement" type="Label" parent="LevelInfo"]
+margin_left = 13.0
+margin_top = 43.0
+margin_right = 123.0
+margin_bottom = 60.0
+theme = ExtResource( 8 )
+text = "Required to mine:  500"
 
 [node name="Sfx" type="Node" parent="."]
 

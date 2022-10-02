@@ -7,61 +7,67 @@ var all = {
 	"01": {
 		sources = 4,
 		enemies = 2,
-		enemy_types = ["01", "01"],
+		enemy_types = ["01", "01", "-", "0.1"],
 		finished = false,
 		next = "02",
 		locked = false,
-		unlocks = ["02"]
+		unlocks = ["02"],
+		target_power = 1500
 	},
 	
 	"02": {
-		sources = 3,
+		sources = 2,
 		enemies = 3,
-		enemy_types = ["01", "01", "01"],
+		enemy_types = ["01", "01", "-", "02"],
 		finished = false,
 		next = "03",
 		locked = true,
-		unlocks = ["03"]
+		unlocks = ["03"],
+		target_power = 1500
 	},
 	
 	"03": {
 		sources = 2,
 		enemies = 6,
-		enemy_types = ["01", "01", "01", "01", "02", "02"],
+		enemy_types = ["01", "01", "01", "01", "-", "02", "02"],
 		finished = false,
 		locked = true,
-		unlocks = ["04", "05"],
-		next = "04"
+		unlocks = ["04", "05", "09"],
+		next = "04",
+		target_power = 2000
 	},
 	
 	"04": {
 		sources = 2,
 		enemies = 6,
-		enemy_types = ["02", "02", "02", "01", "01", "01"],
+		enemy_types = ["02", "02", "02", "-", "01", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "06",
+		unlocks = ["06"],
+		target_power = 3000
 	},
 	
 	"05": {
 		sources = 2,
 		enemies = 6,
-		enemy_types = ["02", "01", "01", "01", "03", "03"],
+		enemy_types = ["02", "01", "01", "-", "01", "03", "03"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "07",
+		unlocks = ["07"],
+		target_power = 3000
 	},
 	
 	"06": {
 		sources = 2,
 		enemies = 10,
-		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
+		enemy_types = ["01", "01", "01","-", "02", "02", "-", "03", "03", "03", "-", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "08",
+		unlocks = ["08"],
+		target_power = 4000
 	},
 	###############################
 	"07": {
@@ -70,35 +76,39 @@ var all = {
 		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "10",
+		unlocks = ["10"],
+		target_power = 5000
 	},
 	"08": {
-		sources = 2,
+		sources = 1,
 		enemies = 10,
 		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "11",
+		unlocks = ["11"],
+		target_power = 5000
 	},
 	"09": {
-		sources = 2,
+		sources = 1,
 		enemies = 10,
 		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "13",
+		unlocks = ["11", "12", "13"],
+		target_power = 2000
 	},
 	"10": {
-		sources = 2,
+		sources = 4,
 		enemies = 10,
-		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
+		enemy_types = ["01", "01", "01", "-", "02", "02", "03", "-", "03", "03", "-", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "12",
+		unlocks = ["12"],
+		target_power = 5000
 	},
 	"11": {
 		sources = 2,
@@ -106,26 +116,29 @@ var all = {
 		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "13",
+		unlocks = ["13"],
+		target_power = 5000
 	},
 	"12": {
-		sources = 2,
+		sources = 3,
 		enemies = 10,
 		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = "13",
+		unlocks = ["13"],
+		target_power = 5000
 	},
 	"13": {
-		sources = 2,
+		sources = 4,
 		enemies = 10,
 		enemy_types = ["01", "01", "01", "02", "02", "03", "03", "03", "01", "01"],
 		finished = false,
 		locked = true,
-		next = "",
-		unlocks = []
+		next = null,
+		unlocks = [],
+		target_power = 10000
 	}
 }
 
@@ -138,7 +151,8 @@ func current_level_succeeded():
 		finished_level.finished = true
 		for unlock_id in finished_level.unlocks:
 			all[unlock_id].locked = false
-		default_level = finished_level.next
+		if finished_level.has("next") and finished_level.next:
+			default_level = finished_level.next
 		
 func set_current_level(level_code):
 	if all.has(level_code):

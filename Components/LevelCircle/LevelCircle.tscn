@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Components/LevelCircle/sprite.png" type="Texture" id=1]
 [ext_resource path="res://Components/LevelCircle/LevelCircle.gd" type="Script" id=2]
+[ext_resource path="res://Components/LevelCircle/lock.png" type="Texture" id=3]
 [ext_resource path="res://Assets/dup.wav" type="AudioStream" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -24,5 +25,11 @@ stream = ExtResource( 4 )
 
 [node name="Nono" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource( 4 )
+
+[node name="Lock" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -1 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 3 )
 
 [connection signal="input_event" from="." to="." method="_on_01_input_event"]

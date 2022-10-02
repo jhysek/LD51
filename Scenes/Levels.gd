@@ -16,6 +16,8 @@ func setup_levels():
 			print(str(level_node.name) + " > HAS LEVEL") 		
 			if Levels.all[level_node.name].finished:
 				level_node.finished()
+			if Levels.all[level_node.name].locked:
+				level_node.lock()
 		else:
 			level_node.lock()
 			
@@ -34,4 +36,4 @@ func set_selected(level):
 	$LevelInfo/Label.text = "Area " + str(level.name)
 	$LevelInfo/Enemies.text = "Enemies: " + str(level_config.enemies)
 	$LevelInfo/PowerSources.text = "Power sources: " + str(level_config.sources)
-	
+	$LevelInfo/Requirement.text = "Required to mine: " + str(level_config.target_power)
