@@ -28,13 +28,12 @@ func finished():
 
 func select(value):
 	if locked:
-		$Sfx/Nono.play()
 		return
 		
 	selected = value
 	if selected:
 		menu.unselect_levels()
-		$Sfx/Click.play()
+
 		$Sprite.modulate = Color(1, 0, 1, 1)
 		menu.set_selected(self)
 	else: 
@@ -45,5 +44,9 @@ func select(value):
 
 func _on_01_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed:
+		if locked:
+			$Sfx/Nono.play()
+		else:
+			$Sfx/Click.play()
 		select(true)
 		

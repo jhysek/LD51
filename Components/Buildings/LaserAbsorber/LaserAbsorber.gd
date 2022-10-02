@@ -13,6 +13,7 @@ func price():
 	
 func trigger_outputs(input_parameter = null):
 	$AnimationPlayer.play("Impulse")
+	$Sfx/Pulse.play()
 	for consumer in $RangeArea.get_overlapping_areas():
 		if consumer.is_in_group("Enemy"):
 			consumer.triggered_by_power_pulse(self)

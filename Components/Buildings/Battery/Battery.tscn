@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Components/Buildings/Battery/Battery.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/Battery/icon_white.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Components/Progressbar/TimeoutProgress.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Components/Buildings/PowerSource/impulse.png" type="Texture" id=6]
 [ext_resource path="res://Components/Buildings/Battery/RangeArea.gd" type="Script" id=7]
+[ext_resource path="res://Components/Buildings/PowerSource/pulse.wav" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 26, 18 )
@@ -119,6 +120,12 @@ wait_time = 0.2
 one_shot = true
 
 [node name="DestroyTimer" type="Timer" parent="."]
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Pulse" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 8 )
+volume_db = -2.571
 
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]

@@ -15,19 +15,13 @@ func _ready():
 	
 func price():
 	var price = Components.definitions[type].price 
-	print("BATTERY PRICE = " + str(price))
-	print("BATTERY MAX HP: " + str(Components.definitions[type].hitpoints))
-	print("BATTERY HP: " + str(hitpoints))
-	print("BATTERU DAMAGE RATIO = " + str(hitpoints / float(Components.definitions[type].hitpoints)))
 	return round(price * (hitpoints / float(Components.definitions[type].hitpoints)))
 	
 func on_triggered():
-	print("BATTERY TRIGGERED")
 	current_capacity = min(max_capacity, current_capacity + power)
 	$TimeoutProgress.value = current_capacity
 	
 func on_power_changed():
-	print("BATTERY POWER CHANGED: " + str(state))
 	for consumer in $RangeArea.get_overlapping_areas():
 		if consumer.is_in_group("PowerConsumer") and consumer != self:
 			consumer.refresh_power_changed()
@@ -44,6 +38,7 @@ func _on_Timer_timeout():
 			power_off()
 		$TimeoutProgress.value = round(current_capacity)
 		$AnimationPlayer.play("Impulse")
+		$Sfx/Pulse.play()
 		trigger_outputs(power)
 	
 func after_switch_to_tactical():

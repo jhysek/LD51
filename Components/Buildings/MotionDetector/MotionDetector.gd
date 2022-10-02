@@ -36,6 +36,7 @@ func on_power_change():
 
 
 func on_triggered():
+	$Sfx/Pulse.play()
 	$AnimationPlayer.play("PowerSourceImpulse")
 	var radar_area = get_node("RadarArea")
 	for area in radar_area.get_overlapping_areas():

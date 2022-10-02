@@ -31,7 +31,8 @@ var config = {
 	attack = ATTACK,
 	hitpoints = HP,
 	shooting = SHOOTING,
-	price = 50
+	price = 50,
+	code = "01"
 }
 
 func _ready():
@@ -41,11 +42,14 @@ func _ready():
 func setup(code):
 	if code == "01" or code == "02" or code == "03":
 		config = Components.enemies[code]
+		config.code = code
 		$Visual/e01.hide()
 		$Visual/e02.hide()
 		$Visual/e03.hide()
 		$Visual.get_node("e" + code).show()
 		$HealthBar.setup(config.hitpoints)
+	if code == "01" or code == "02":
+		$Sfx/Walk.play()
 			
 func set_type(new_type):
 	if Components.enemies.has(new_type):
@@ -72,7 +76,8 @@ func _physics_process(delta):
 		
 		if state == States.ATTACK_WALK:
 			print("Setting state to ATTACK")
-			state = States.ATTACK			
+			state = States.ATTACK		
+			$Sfx/Walk.stop()	
 			$AttackTimer.start()
 			
 func pop_next_target():
@@ -124,6 +129,7 @@ func triggered_by_power_pulse(from):
 		attack_building.connect("building_destroyed", self, "building_destroyed")
 		if config.shooting:
 			state = States.ATTACK
+			$Sfx/Walk.stop()
 			shoot_direction = position.direction_to(attack_building.position)
 			$AttackTimer.start()
 
@@ -143,6 +149,7 @@ func _on_AttackTimer_timeout():
 			if config.shooting:
 				fire()
 			else:
+				$Sfx/Hit.play()
 				attack_building.hit(config.attack, self)
 			$AttackTimer.start()
 
@@ -161,6 +168,7 @@ func die():
 	game.earn(config.price)
 	toast.say("+ " + str(config.price), { at = position })
 	state = States.DEAD
+	$Sfx/Walk.stop()
 	emit_signal("enemy_is_gone")
 	queue_free()
 			
@@ -173,4 +181,6 @@ func hit(hp):
 
 func _on_WalkAgainTimer_timeout():
 	state = States.WALK
+	if config.code == "01" or config.code == "02":
+		$Sfx/Walk.play()
 	

@@ -42,6 +42,7 @@ func switch_to_defence():
 	cooldown = 0
 	$Light2D.texture_scale = 0.01
 	$Light2D.energy = 0
+	$Sfx/Brum.play()
 	
 func _process(delta):
 	if !tactical_mode and state == 1:
@@ -54,11 +55,14 @@ func _on_Timer_timeout():
 		cooldown = 0
 		game.mine(MINE_QUANTITY)
 		$AnimationPlayer.play("Impulse")
+		$Sfx/Pulse.play()
 		$DistributionDelay.start()
 	else:
 		print("TACTICAL MODE")
 
 func destroy():
+	$Sfx/Brum.stop()
+	$Sfx/Destroyed.play()
 	$Timer.stop()
 	emit_signal("building_destroyed")
 	get_node("/root/Game").building_destroyed(code)

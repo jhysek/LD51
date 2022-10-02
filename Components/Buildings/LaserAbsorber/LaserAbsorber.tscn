@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Components/Buildings/LaserAbsorber/LaserAbsorber.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/LaserAbsorber/icon_white.png" type="Texture" id=2]
 [ext_resource path="res://Components/TurretComponent/box.png" type="Texture" id=3]
 [ext_resource path="res://Components/Healthbar/HealthBar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Components/Buildings/PowerSource/pulse.wav" type="AudioStream" id=5]
 [ext_resource path="res://Components/Buildings/PowerSource/impulse.png" type="Texture" id=6]
 [ext_resource path="res://Components/Buildings/Battery/RangeArea.gd" type="Script" id=7]
 
@@ -108,6 +109,11 @@ texture_scale = 0.33
 [node name="DestroyTimer" type="Timer" parent="."]
 wait_time = 1.5
 one_shot = true
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Pulse" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 5 )
 
 [connection signal="area_entered" from="." to="." method="_on_LaserAbsorber_area_entered"]
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]

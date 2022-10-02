@@ -16,7 +16,7 @@
 [ext_resource path="res://Components/Buildings/LaserAbsorber/icon_white.png" type="Texture" id=14]
 [ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=15]
 [ext_resource path="res://Assets/place.wav" type="AudioStream" id=16]
-[ext_resource path="res://Assets/ok.wav" type="AudioStream" id=17]
+[ext_resource path="res://Assets/click.wav" type="AudioStream" id=17]
 [ext_resource path="res://Assets/unplace.wav" type="AudioStream" id=18]
 
 [sub_resource type="DynamicFont" id=12]

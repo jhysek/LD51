@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Components/Buildings/PowerSource/PowerSource.gd" type="Script" id=1]
+[ext_resource path="res://Components/Buildings/PowerSource/wroom.wav" type="AudioStream" id=2]
 [ext_resource path="res://Components/Buildings/PowerSource/range.png" type="Texture" id=3]
 [ext_resource path="res://Components/Buildings/PowerSource/impulse.png" type="Texture" id=4]
 [ext_resource path="res://Components/Buildings/Battery/BatteryImpulse.tres" type="Animation" id=5]
@@ -8,6 +9,8 @@
 [ext_resource path="res://Components/Progressbar/TimeoutProgress.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Components/TurretComponent/box.png" type="Texture" id=8]
 [ext_resource path="res://Components/Buildings/PowerSource/icon.png" type="Texture" id=9]
+[ext_resource path="res://Components/Buildings/PowerSource/pulse.wav" type="AudioStream" id=10]
+[ext_resource path="res://Components/Buildings/destroyed.wav" type="AudioStream" id=11]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 153.003
@@ -147,8 +150,14 @@ one_shot = true
 [node name="Sfx" type="Node" parent="."]
 
 [node name="Brum" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 2 )
+volume_db = -11.053
 
 [node name="Pulse" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 10 )
+
+[node name="Destroyed" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource( 11 )
 
 [connection signal="area_entered" from="." to="." method="_on_PowerSource_area_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

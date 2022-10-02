@@ -29,6 +29,7 @@ func _on_Bullet_area_entered(area):
 		queue_free()
 		
 	if originator and area.is_in_group("Building"):
+		$Sfx/Hit.play()
 		area.hit(power, originator)
 		activated = false
 		queue_free()
