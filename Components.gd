@@ -3,7 +3,7 @@ extends Node
 var  definitions = {
 	PowerSource = {
 		price = 500,
-		description ="Generates power pulse every 10 seconds. Place on power source only.",
+		description ="Generates power pulse every 10 seconds. Place it on power source only.",
 		name = "Power Plant",
 		hitpoints = 200
 	},
@@ -11,14 +11,14 @@ var  definitions = {
 	"Turret": {
 		price = 200,
 		name = "Laser Turret",
-		description = "Shoots laser beam whenever it receives a power pulse. Can rotate if receives location data.",
+		description = "Shoots laser beam whenever it receives a power pulse. Rotates if receives location data.",
 		hitpoints = 100
 	},
 	
 	"Battery": {
 		price = 500,
 		name = "Battery / buffer",
-		description = "Stores energy and release it in smaller pulses every 1s. Charges if receives power pulse. It's pre-charged.",
+		description = "Stores energy and releases it in smaller pulses every 1s. Charges if receives power pulse. It's pre-charged.",
 		hitpoints = 100
 	},
 	

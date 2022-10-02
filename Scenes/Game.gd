@@ -75,6 +75,7 @@ func start_defence_mode():
 	$CanvasLayer/DefenceOverlay.show()
 	update_buildings_cost()
 	emit_signal("defence_mode_signal")
+	$Sfx/Music.play()
 	
 func abort_mission():
 	if mode == GameModes.DEFENCE:

@@ -1,4 +1,4 @@
 extends Node
 
-var balance = 800
+var balance = 1000
 

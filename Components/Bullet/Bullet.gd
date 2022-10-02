@@ -23,7 +23,6 @@ func _physics_process(delta):
 		
 func _on_Bullet_area_entered(area):
 	if area.is_in_group("Enemy") and area != originator:
-		print("ENEMY HIT")
 		activated = false
 		area.hit(power)
 		queue_free()
