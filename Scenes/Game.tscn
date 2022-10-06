@@ -298,7 +298,19 @@ custom_styles/hover = SubResource( 5 )
 custom_styles/normal = SubResource( 6 )
 text = "START"
 
+[node name="AbortTactical" type="Button" parent="CanvasLayer/TacticsOverlay"]
+margin_left = 758.0
+margin_top = -721.0
+margin_right = 959.0
+margin_bottom = -666.0
+custom_colors/font_color = Color( 1, 0, 1, 1 )
+custom_fonts/font = SubResource( 7 )
+custom_styles/hover = SubResource( 9 )
+custom_styles/normal = SubResource( 8 )
+text = "ABORT MISSION"
+
 [node name="DefenceOverlay" type="Node2D" parent="CanvasLayer"]
+visible = false
 
 [node name="Abort" type="Button" parent="CanvasLayer/DefenceOverlay"]
 margin_left = 979.0
@@ -467,7 +479,7 @@ stream = ExtResource( 17 )
 
 [node name="Music" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource( 19 )
-volume_db = -24.21
+volume_db = -17.679
 
 [node name="FinishCheck" type="Timer" parent="."]
 one_shot = true
@@ -476,6 +488,7 @@ one_shot = true
 position = Vector2( 609, 148 )
 
 [connection signal="pressed" from="CanvasLayer/TacticsOverlay/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TacticsOverlay/AbortTactical" to="." method="_on_AbortTactical_pressed"]
 [connection signal="pressed" from="CanvasLayer/DefenceOverlay/Abort" to="." method="_on_Abort_pressed"]
 [connection signal="pressed" from="CanvasLayer/DefenceOverlay/AbortMenu/Success/OK" to="." method="_on_mision_aboard"]
 [connection signal="pressed" from="CanvasLayer/DefenceOverlay/AbortMenu/Fail/OK" to="." method="_on_mision_aboard"]

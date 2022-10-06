@@ -37,9 +37,12 @@ func _on_Timer_timeout():
 		else: 
 			power_off()
 		$TimeoutProgress.value = round(current_capacity)
-		$AnimationPlayer.play("Impulse")
-		$Sfx/Pulse.play()
-		trigger_outputs(power)
+		if current_capacity > 20:
+			$AnimationPlayer.play("Impulse")
+			$Sfx/Pulse.play()
+			trigger_outputs(50)
+		else:
+			power_off()
 	
 func after_switch_to_tactical():
 	$Timer.stop()
@@ -49,7 +52,6 @@ func after_switch_to_defence():
 	$Timer.start()
 	
 func trigger_outputs(input_parameter = null):
-	print("trigger_outputs")
 	$DistributionDelay.start()
 
 func decrease_capacity(by):
@@ -69,8 +71,8 @@ func _on_DistributionDelay_timeout():
 		if consumer.is_in_group("Enemy"):
 			consumer.triggered_by_power_pulse(self)
 			
-		print("overlas with " + str(consumer))
 		if consumer.is_in_group("PowerConsumer") and consumer != self:
 			print("triggering -> " + consumer.name)
-			decrease_capacity(20)
-			consumer.trigger(20)
+			if current_capacity > 20:
+				decrease_capacity(20)
+				consumer.trigger(20)

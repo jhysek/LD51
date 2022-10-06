@@ -23,6 +23,12 @@ func trigger_outputs(input_parameter = null):
 
 func _on_LaserAbsorber_area_entered(area):
 	if area.is_in_group("Laser"):
-		trigger(area.power - 5)
-		trigger_outputs()
-		area.queue_free()
+		if area.power > 5:
+			print("ABSORBER RECEIVED POWER: " + str(area.power))
+			trigger(area.power - 5)
+			$DistributionDelay.start()
+			area.queue_free()
+
+
+func _on_DistributionDelay_timeout():
+	trigger_outputs()

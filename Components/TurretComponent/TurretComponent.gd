@@ -104,7 +104,8 @@ func destroy():
 func hit(hp, by = null):
 	if hitpoints > 0:
 		hitpoints = hitpoints - hp
-		$HealthBar.set_value(hitpoints)
+		if (has_node("HealthBar")):
+			$HealthBar.set_value(hitpoints)
 		game.update_buildings_cost()
 		print("Damage... HP: " + str(hitpoints))
 		if hitpoints <= 0:

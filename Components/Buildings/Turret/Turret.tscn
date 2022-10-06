@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Components/Buildings/Turret/Turret.gd" type="Script" id=1]
 [ext_resource path="res://Components/Buildings/Turret/icon_white.png" type="Texture" id=2]
 [ext_resource path="res://Components/TurretComponent/box.png" type="Texture" id=3]
 [ext_resource path="res://Components/TurretComponent/laserShoot.wav" type="AudioStream" id=4]
+[ext_resource path="res://Components/Healthbar/HealthBar.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 26, 18 )
@@ -35,10 +36,12 @@ stream = ExtResource( 4 )
 
 [node name="Tween" type="Tween" parent="."]
 
-[node name="DestroyTimer]" type="Timer" parent="."]
+[node name="DestroyTimer" type="Timer" parent="."]
 wait_time = 1.5
 one_shot = true
 
+[node name="HealthBar" parent="." instance=ExtResource( 5 )]
+
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]
-[connection signal="timeout" from="DestroyTimer]" to="." method="_on_DestroyTimer_timeout"]
+[connection signal="timeout" from="DestroyTimer" to="." method="_on_DestroyTimer_timeout"]

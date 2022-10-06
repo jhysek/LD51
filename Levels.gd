@@ -7,12 +7,13 @@ var all = {
 	"01": {
 		sources = 4,
 		enemies = 2,
-		enemy_types = ["01", "01", "-", "0.1"],
+		enemy_types = ["01", "01"],
 		finished = false,
 		next = "02",
 		locked = false,
 		unlocks = ["02"],
-		target_power = 1500
+		target_power = 1500,
+		disabled_buildings = ["Battery", "LaserAbsorber"]
 	},
 	
 	"02": {
@@ -23,7 +24,8 @@ var all = {
 		next = "03",
 		locked = true,
 		unlocks = ["03"],
-		target_power = 1500
+		target_power = 1500,
+		disabled_buildings = ["LaserAbsorber"]
 	},
 	
 	"03": {
@@ -34,7 +36,8 @@ var all = {
 		locked = true,
 		unlocks = ["04", "05", "09"],
 		next = "04",
-		target_power = 2000
+		target_power = 2000,
+		disabled_buildings = ["LaserAbsorber"]
 	},
 	
 	"04": {
@@ -132,8 +135,8 @@ var all = {
 	},
 	"13": {
 		sources = 4,
-		enemies = 20,
-		enemy_types = ["01", "01", "01", "-", "02", "02", "03", "-", "03", "03", "01", "01", "-", "03", "02", "02", "03", "-", "01", "02", "01", "-", "03", "03", "03"],
+		enemies = 26,
+		enemy_types = ["01", "01", "01", "-", "02", "02", "03", "-", "03", "03", "01", "01", "-", "03", "02", "02", "03", "-", "01", "02", "01", "-", "03", "03", "03", "-", "03", "03", "03", "-", "03", "03", "03"],
 		finished = false,
 		locked = true,
 		next = null,

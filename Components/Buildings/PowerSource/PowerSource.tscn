@@ -151,7 +151,7 @@ one_shot = true
 
 [node name="Brum" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource( 2 )
-volume_db = -11.053
+volume_db = -4.522
 
 [node name="Pulse" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource( 10 )

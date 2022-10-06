@@ -115,6 +115,11 @@ one_shot = true
 [node name="Pulse" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource( 5 )
 
+[node name="DistributionDelay" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="area_entered" from="." to="." method="_on_LaserAbsorber_area_entered"]
 [connection signal="area_entered" from="." to="." method="_on_Turret_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Turret_area_exited"]
+[connection signal="timeout" from="DistributionDelay" to="." method="_on_DistributionDelay_timeout"]

@@ -45,7 +45,7 @@ func _ready():
 func mine(amount):
 	mined += amount
 	update_mined()
-	if mined >= config.target_power:
+	if mined >= config.target_power or live_enemy_count() == 0:
 		$FinishCheck.start()
 	
 func show_toast(msg, color = null):
@@ -66,6 +66,10 @@ func start_tactics_mode():
 	generate_enemy_waves(config.enemy_types)
 	indicate_enemy_entrances()
 	emit_signal("tactical_mode_signal")
+	if config.has("disabled_building"):
+		for building_name in config.disabled_building:
+			if $CanvasLayer/TacticsOverlay/Control/Buildings.has(building_name):
+				$CanvasLayer/TacticsOverlay/Control/Buildings.get_node(building_name).hide()
 
 func start_defence_mode():
 	mode = GameModes.DEFENCE
@@ -397,7 +401,16 @@ func _on_mision_aboard():
 func check_end_mission():
 	print("ENEMY IS GONE")
 
+func live_enemy_count():
+	var live_enemies = enemies.size()
+	for enemy in game_field.get_children():
+		if enemy.is_in_group("Enemy"):
+			live_enemies += 1
+	return live_enemies
+
 func _on_FinishCheck_timeout():	
+	var live_enemies = live_enemy_count()
+	
 	var has_power_source = false
 	for building in building_placement:
 		var type = building_placement[building].type
@@ -409,9 +422,14 @@ func _on_FinishCheck_timeout():
 	$CanvasLayer/DefenceOverlay/AbortMenu/Label2.text = "Total balance: " + str(remaining + Inventory.balance + mined) + " credits" 
 	$CanvasLayer/DefenceOverlay/AbortMenu/Mined.text = "Mined energy will be sold for: " + str(mined) + " credits"
 	
-	if mined >= config.target_power or !has_power_source:
+	if mined >= config.target_power or !has_power_source or live_enemies == 0:
 		paused = true
 		if has_power_source:
+			# Speed up mining
+			mined = config.target_power
+			$CanvasLayer/DefenceOverlay/AbortMenu/Label2.text = "Total balance: " + str(remaining + Inventory.balance + mined) + " credits" 
+			$CanvasLayer/DefenceOverlay/AbortMenu/Mined.text = "Mined energy will be sold for: " + str(mined) + " credits"
+			update_mined()
 			$CanvasLayer/DefenceOverlay/AbortMenu/Abort.hide()
 			$CanvasLayer/DefenceOverlay/AbortMenu/Fail.hide()
 			$CanvasLayer/DefenceOverlay/AbortMenu/Success.show()
@@ -424,3 +442,5 @@ func _on_FinishCheck_timeout():
 			$CanvasLayer/DefenceOverlay/AbortMenu.show()
 		
 
+func _on_AbortTactical_pressed():
+	get_tree().change_scene("res://Scenes/Levels.tscn")

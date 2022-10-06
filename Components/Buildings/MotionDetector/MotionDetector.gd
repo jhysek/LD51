@@ -10,7 +10,6 @@ func _ready():
 	hitpoints = Components.definitions[type].hitpoints
 	$HealthBar.setup(hitpoints)
 	switch_to_tactical()
-
 	super()
 	game = get_node("/root/Game")
 	game.connect("tactical_mode_signal", self, 'switch_to_tactical')
@@ -56,7 +55,7 @@ func _on_DistributionDelay_timeout():
 		if consumer.is_in_group("Enemy"):
 			consumer.triggered_by_power_pulse(self)
 			
-		if consumer.is_in_group("PowerConsumer") and consumer != self:
+		if consumer.is_in_group("PowerConsumer") and consumer != self and consumer.type != "Battery":
 			print("triggering -> " + consumer.name)
 			consumer.trigger(power, parameter)
 

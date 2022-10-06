@@ -39,9 +39,9 @@ var  definitions = {
 
 var enemies = {
 	"01": {
-		speed = 50,
+		speed = 80,
 		attack = 10,
-		hitpoints = 40,
+		hitpoints = 70,
 		shooting = false,
 		price = 50
 	},
@@ -49,15 +49,15 @@ var enemies = {
 	"02": {
 		speed = 25,
 		attack = 20,
-		hitpoints = 100,
+		hitpoints = 180,
 		shooting = false,
 		price = 200
 	},
 	
 	"03":  {
-		speed = 50,
+		speed = 55,
 		attack = 10,
-		hitpoints = 30,
+		hitpoints = 40,
 		shooting = true,
 		price = 100
 	}

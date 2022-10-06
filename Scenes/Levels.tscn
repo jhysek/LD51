@@ -148,7 +148,7 @@ margin_right = 1165.0
 margin_bottom = 117.0
 custom_colors/font_color = Color( 1, 0, 1, 1 )
 custom_fonts/font = SubResource( 1 )
-text = "DEFENCE ENGINEERS"
+text = "DEFENSE ENGINEERS"
 align = 1
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -320,6 +320,7 @@ text = "Required to mine:  500"
 stream = ExtResource( 7 )
 
 [node name="Notice" type="Label" parent="."]
+visible = false
 modulate = Color( 1, 1, 1, 0.478431 )
 margin_left = 393.0
 margin_top = 123.0

@@ -9,6 +9,11 @@ var direction = Vector2.RIGHT
 
 var error = ""
 
+func _ready():
+	hitpoints = Components.definitions[type].hitpoints
+	$HealthBar.setup(hitpoints)
+	super()
+	
 func price():
 	return Components.definitions[type].price 
 	
@@ -35,6 +40,6 @@ func fire(power, direction, angle = 0):
 	get_parent().add_child(bullet)
 	bullet.position = position #+ Vector2(32, 0) 
 	bullet.rotation = angle
-	bullet.fire(power, direction)
+	bullet.fire(power - 5, direction)
 	$Sfx/Fire.play()
 	
